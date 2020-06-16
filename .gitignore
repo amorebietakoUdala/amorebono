@@ -8,3 +8,8 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+/nbproject/private/
+/node_modules/
+/public/build/
+/public/js/
+/public/translations/

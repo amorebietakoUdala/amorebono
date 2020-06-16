@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.selling.new' | trans }}{% endblock %}
+
+{% block body %}
+    <main class="container-fluid" >
+		{{ include ('/selling/_form.html.twig', {'readonly': readonly, 'new': new}) }}
+    </main>
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('selling_edit') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('selling_edit') }}
+{% endblock %}

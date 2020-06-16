@@ -1,0 +1,77 @@
+{{ form_start(form, {'attr': {'class': '',
+						 'novalidate': 'novalidate'
+						} 
+}) }}
+
+
+<div class="container-fluid m-0">
+	<div class="row m-1">
+		<div class="col">
+			<div class="form-row mt-1">
+				<div class="col-2 form-group">
+					{{ form_label(form.person.NAN) }}
+					<span class="text-danger">{{ form_errors(form.person.NAN) }}</span>
+					{{ form_widget(form.person.NAN, {'attr': {'class': 'form-control form-control-sm js-autocomplete', 'data-url': path('api_person')}}) }}
+				</div>
+				<div class="col-2 form-group">
+					{{ form_label(form.person.izena) }}
+					<span class="text-danger">{{ form_errors(form.person.izena) }}</span>
+					{{ form_widget(form.person.izena, {'attr': {'class': 'form-control form-control-sm js-izena'}}) }}
+				</div>
+				<div class="col-2 form-group">
+					{{ form_label(form.person.abizenak) }}
+					<span class="text-danger">{{ form_errors(form.person.abizenak) }}</span>
+					{{ form_widget(form.person.abizenak, {'attr': {'class': 'form-control form-control-sm js-abizenak'}}) }}
+				</div>
+				<div class="col-2 form-group">
+					{{ form_label(form.person.telefonoa) }}
+					<span class="text-danger">{{ form_errors(form.person.telefonoa) }}</span>
+					{{ form_widget(form.person.telefonoa, {'attr': {'class': 'form-control form-control-sm js-telefonoa'}}) }}
+				</div>                
+			</div>
+           	<div class="form-row mt-1">
+				<div class="col-lg-2 form-group">
+					{{ form_label(form.serialNumber) }}
+					<span class="text-danger">{{ form_errors(form.serialNumber) }}</span>
+					{{ form_widget(form.serialNumber, {'attr': {'class': 'form-control form-control-sm'}}) }}
+				</div>                
+				<div class="col-3 form-group">
+					{{ form_label(form.bonus) }}
+					<span class="text-danger">{{ form_errors(form.bonus) }}</span>
+                    {% set url= path('api_bonus') %}
+					{{ form_widget(form.bonus, {'attr': {'class': 'form-control form-control-sm js-bonus', 'data-url': url}}) }}
+				</div>
+				<div class="col-lg-1 form-group">
+					{{ form_label(form.quantity) }}
+					<span class="text-danger">{{ form_errors(form.quantity) }}</span>
+					{{ form_widget(form.quantity, {'attr': {'class': 'form-control form-control-sm js-quantity'}}) }}
+				</div>
+				<div class="col-lg-1 form-group">
+					{{ form_label(form.totalPrice) }}
+					<span class="text-danger">{{ form_errors(form.totalPrice) }}</span>
+					{{ form_widget(form.totalPrice, {'attr': {'class': 'form-control form-control-sm js-totalPrice'}}) }}
+				</div>
+				<div class="col-lg-1 form-group">
+                    <label>{{ 'selling.remainingBonuses' | trans }}</label>
+                    <span class="text js-remaining"></span>
+				</div>
+            </div>
+		</div>
+	</div>
+</div>
+<div class="row justify-content-center mt-2">
+{% if not readonly and not new %}
+	<button class="btn btn-primary ml-2 js-save" type="button" data-url="{{ path('selling_edit', {'selling': form.vars.value.id}) }}">{{ "btn.save" | trans }}</button>
+{% endif %}
+{% if new %}
+	<button class="btn btn-primary ml-2 js-save" type="submit">{{ "btn.save" | trans }}</button>
+{% endif %}
+	<button class="btn btn-primary ml-2 js-back" type="button" data-url="{{ path('selling_list') }}">{{ "btn.cancel" | trans }}</button>
+</div>
+
+<!-- Token CSRF -->
+{{ form_widget(form._token) }}
+{{ form_end(form, {'render_rest': false, 
+				   'attr': {'class': '',
+			       } 
+}) }}

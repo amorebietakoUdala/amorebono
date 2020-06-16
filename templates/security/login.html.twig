@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login!{% endblock %}
+
+{% block menu %}{% endblock %}
+
+{% block body %}
+<div class="container margin-top-13">
+	<div class="col">
+	    <div class="container col-lg-5 col-md-5 p-3 border border-info rounded bg-light">
+		{% if error %}
+			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
+		<form action="{{ path("app_login") }}" method="post">
+		    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+
+		    <div class="form-group">
+			<label for="username">{{ 'security.login.username'| trans }}</label>
+			<input class="form-control" type="text" id="username" name="username" value="{{ last_username }}" required="required" />
+		    </div>
+		
+
+		    <div class="form-group">
+			<label for="password">{{ 'security.login.password' | trans | capitalize }}</label>
+			<input class="form-control" type="password" id="password" name="password" required="required" />
+		    </div>
+
+		    <div class="form-group form-inline">
+			<input type="checkbox" id="remember_me" name="_remember_me" value="on" />&nbsp;
+			<label for="remember_me">{{ 'security.login.remember_me'| trans | capitalize}}</label>
+		    </div>
+
+		    <div class="container-fluid row">
+			<div class="container-fuild col text-center">
+			    <button type="submit" class="btn btn-primary">{{ 'security.login.submit'| trans | capitalize}}</button>
+			</div>
+		    </div>
+		</form>
+	    </div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('login') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('login') }}
+{% endblock %}

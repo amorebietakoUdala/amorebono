@@ -4,8 +4,28 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    domain: '%env(LDAP_ACCOUNTDOMAINNAME)%'
+    ldap_users_dn: '%env(LDAP_USERS_DN)%'
+    ldap_users_uuid: '%env(LDAP_USERS_UUID)%'
+    # Use {username} in the filter where the username has to be replaced.
+    ldap_users_filter: '(&(objectclass=Person)(%env(LDAP_USERS_UUID)%={username}))'    
 
 services:
+    Symfony\Component\Ldap\Ldap:
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+
+    ldap:
+        alias: Symfony\Component\Ldap\Ldap
+            
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        arguments:
+            -   host: '%env(LDAP_HOST)%'
+                port: '%env(LDAP_PORT)%'
+                encryption: none
+                options:
+                    protocol_version: 3
+                    referrals: false    
+                    
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

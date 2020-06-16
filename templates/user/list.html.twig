@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List Users{% endblock %}
+
+{% block body %}
+    <main class="container-fluid" >
+	
+{#		{% include '/quota/_searchForm.html.twig' %}
+#}	
+		<div class="container-fluid">
+			{% if users is defined and users|length > 0 %}
+			<table id="taula" class="table bootstrap-table mt-3">
+			<thead>
+				<tr>
+				<th data-sortable="true">{{"user.id" | trans | capitalize}}</th>
+				<th data-sortable="true">{{"user.username" | trans | capitalize}}</th>
+				<th data-sortable="true">{{"user.firstName" | trans | capitalize}}</th>
+				<th data-sortable="true">{{"user.email" | trans | capitalize}}</th>
+				<th data-sortable="true">{{"user.roles" | trans | capitalize}}</th>
+				<th data-sortable="true" data-field="options">{{"table.options" | trans | capitalize}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+				<tr>
+					<td>{{user.id}}</td>
+					<td>{{user.username}}</td>
+					<td>{{user.firstName}}</td>
+					<td>{{user.email}}</td>
+					<td>
+						{% for role in user.roles %}
+							{{ role | trans | capitalize }} |
+						{% endfor %}
+					</td>
+					<td>
+					<a href="{{ path ("admin_user_show",{'user': user.id })}}"><i class="fa fa-eye"></i></a>
+					&nbsp;<a href="{{ path ("admin_user_edit",{'user': user.id })}}"><i class="fa fa-edit"></i></a>
+					&nbsp;<a class="js-delete" href="#" 
+							 data-url="{{ path ('admin_user_delete',{'user': user.id })}}"><i class="fa fa-trash"></i></a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+			</table>
+			{% else %}
+				<div class="mt-2 p-2 border border-black text-center bg-light">{{"messages.results0" | trans }}</div>
+			{% endif %}
+			<span class="pull-right"><a href="{{ path ('admin_user_new') }}" class="btn btn-primary btn-rounded fixed-bottom-right"><i class="fa fa-plus" title='{{ "btn.new" | trans | capitalize }}'></i></a></span>
+		</div>
+    </main>
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('user_list') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('user_list') }}
+{% endblock %}
