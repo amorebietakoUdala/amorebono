@@ -27,6 +27,7 @@
         "pc-bootstrap4-datetimepicker": "^4.17.51",
         "popper.js": "^1.16.1",
         "sweetalert2": "^9.13.1",
-        "tableexport.jquery.plugin": "^1.10.19"
+        "tableexport.jquery.plugin": "^1.10.19",
+        "websocket-extensions": "^0.1.4"
     }
 }
