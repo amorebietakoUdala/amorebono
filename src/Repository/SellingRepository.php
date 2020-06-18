@@ -39,7 +39,7 @@ class SellingRepository extends ServiceEntityRepository
             $criteriaLike = array_intersect_key($criteria, $criteriaLikeKeys);
             $criteriaAnd = array_diff_key($criteria, $criteriaLikeKeys);
         }
-        $qb = $this->findByQB($criteriaAnd, $criteriaLike, $orderBy = null, $limit = null, $offset = null);
+        $qb = $this->findByQB($criteriaAnd, $criteriaLike, $orderBy, $limit, $offset);
         $query = $qb->getQuery();
         $result = $query->getResult();
 
@@ -69,12 +69,14 @@ class SellingRepository extends ServiceEntityRepository
                     ->setParameter($field, $value);
             }
         }
-//        dd($criteriaLike);
         if ($criteriaLike) {
             foreach ($criteriaLike as $field => $value) {
                 $qb->andWhere('p.'.$field.' LIKE :'.$field)
                     ->setParameter($field, '%'.$value.'%');
             }
+        }
+        foreach ($orderBy as $field => $direction) {
+            $qb->addOrderBy('s.'.$field, $direction);
         }
 
         return $qb;
