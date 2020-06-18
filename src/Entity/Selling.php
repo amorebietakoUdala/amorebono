@@ -26,7 +26,7 @@ class Selling
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $quantity;
+    private $quantity = 1;
 
     /**
      * @ORM\Column(type="float")
