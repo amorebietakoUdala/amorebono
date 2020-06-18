@@ -61,7 +61,7 @@ class SellingRepository extends ServiceEntityRepository
         }
         if (null !== $to) {
             $qb->andWhere('s.sellingDate <= :to')
-        ->setParameter('to', $to);
+        ->setParameter('to', $to.' 23:59:59');
         }
         if ($criteriaAnd) {
             foreach ($criteriaAnd as $field => $value) {

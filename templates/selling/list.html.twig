@@ -27,7 +27,7 @@
 					<td>{{selling.quantity}}</td>
 					<td>{{selling.bonus.type}}</td>
 					<td>{{selling.serialNumber}}</td>
-                    <td>{{selling.sellingDate is null ? '' : selling.sellingDate | date('Y-m-d')}}</td>
+                    <td>{{selling.sellingDate is null ? '' : selling.sellingDate | date('Y-m-d H:i:s')}}</td>
 					<td>
                         <a href="{{ path('selling_show', {'selling': selling.id}) }}"><i class="fa fa-eye"></i></a>
                         &nbsp;<a class="js-delete" href="#" 
