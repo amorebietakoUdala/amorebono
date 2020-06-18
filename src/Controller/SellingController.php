@@ -134,7 +134,7 @@ class SellingController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $sellings = $em->getRepository(Selling::class)->findBy($data);
+            $sellings = $em->getRepository(Selling::class)->findBy($data, ['id' => 'DESC']);
 
             return $this->render('selling/list.html.twig', [
             'form' => $form->createView(),
@@ -142,7 +142,7 @@ class SellingController extends AbstractController
         ]);
         }
 
-        $sellings = $em->getRepository(Selling::class)->findBy($criteria);
+        $sellings = $em->getRepository(Selling::class)->findBy($criteria, ['id' => 'DESC']);
 
         return $this->render('selling/list.html.twig', [
             'form' => $form->createView(),
