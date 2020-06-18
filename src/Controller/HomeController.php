@@ -12,6 +12,6 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->redirectToRoute('selling_list');
+        return $this->redirectToRoute('selling_new');
     }
 }

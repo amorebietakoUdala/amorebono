@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/admin")
+ * @Route("{_locale}/admin")
  * @IsGranted("ROLE_ADMIN")
  */
 class UserController extends AbstractController

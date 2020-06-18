@@ -18,13 +18,21 @@ class SellingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $readonly = $options['readonly'];
-        $builder
+        if (!$readonly) {
+            $builder
             ->add('quantity', null, [
-                'data' => 1,
                 'label' => 'selling.quantity',
                 'attr' => ['min' => 1],
                 'disabled' => $readonly,
-            ])
+            ]);
+        } else {
+            $builder->add('quantity', null, [
+                'label' => 'selling.quantity',
+                'attr' => ['min' => 1],
+                'disabled' => $readonly,
+            ]);
+        }
+        $builder
             ->add('totalPrice', null, [
                 'disabled' => true,
                 'label' => 'selling.totalPrice',

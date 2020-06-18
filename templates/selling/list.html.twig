@@ -30,10 +30,8 @@
                     <td>{{selling.sellingDate is null ? '' : selling.sellingDate | date('Y-m-d')}}</td>
 					<td>
                         <a href="{{ path('selling_show', {'selling': selling.id}) }}"><i class="fa fa-eye"></i></a>
-                        {% if (is_granted("ROLE_ADMIN")) %}
                         &nbsp;<a class="js-delete" href="#" 
                                  data-url="{{ path('selling_delete', {'selling': selling.id}) }}"><i class="fa fa-trash"></i></a>
-                        {% endif %}
 					</td>
 				</tr>
 				{% endfor %}

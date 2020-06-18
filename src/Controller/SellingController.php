@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SellingController extends AbstractController
 {
     /**
-     * @Route("/selling/new", name="selling_new")
+     * @Route("/{_locale}/selling/new", name="selling_new")
      */
     public function new(Request $request, TranslatorInterface $translator, UserInterface $user = null)
     {
@@ -86,7 +86,7 @@ class SellingController extends AbstractController
     }
 
     /**
-     * @Route("/selling/{selling}/delete", options={"expose"=true}, name="selling_delete")
+     * @Route("/{_locale}/selling/{selling}/delete", options={"expose"=true}, name="selling_delete")
      */
     public function delete(Selling $selling)
     {
@@ -103,7 +103,7 @@ class SellingController extends AbstractController
     }
 
     /**
-     * @Route("/selling/{selling}", name="selling_show")
+     * @Route("/{_locale}/selling/{selling}", name="selling_show")
      */
     public function show(Selling $selling)
     {
@@ -119,7 +119,7 @@ class SellingController extends AbstractController
     }
 
     /**
-     * @Route("/selling", name="selling_list")
+     * @Route("/{_locale}/selling", name="selling_list")
      */
     public function list(Request $request)
     {
@@ -134,7 +134,6 @@ class SellingController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            dump($data);
             $sellings = $em->getRepository(Selling::class)->findBy($data);
 
             return $this->render('selling/list.html.twig', [
