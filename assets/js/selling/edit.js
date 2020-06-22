@@ -3,22 +3,28 @@ import '../../css/selling/edit.scss';
 import $ from 'jquery';
 import 'jquery-ui/ui/widget.js';
 import 'jquery-ui/ui/widgets/autocomplete';
+const routes = require('../../../public/js/fos_js_routes.json');
+import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 
 $(document).ready(function(){
 	$( ".js-autocomplete" ).autocomplete({
 	    minLength: 2,
 	    source: function (request, response) {
-	      $.ajax({
-		  url: $( ".js-autocomplete" ).data("url"),
-		  dataType: "json",
-		  data: {
-		    nan: request.term
-		  },
-		  success: function (data) {
-		    response(JSON.parse(data));
-		  }
-	      });
-	    },
+            $.ajax({
+            url: $( ".js-autocomplete" ).data("url"),
+            dataType: "json",
+            data: {
+                nan: request.term
+            },
+            success: function (data) {
+                    response(JSON.parse(data));
+              },
+            error: function (data) {
+                    Routing.setRoutingData(routes);
+                    document.location.href='/amorebono'+Routing.generate('app_login');
+              },
+              });
+            },
 	    focus: function( event, ui ) {
 	      $( ".js-autocomplete" ).val( ui.item._nan );
 	      return false;
@@ -38,7 +44,6 @@ $(document).ready(function(){
 	};            
     
     $('.js-bonus').on('change',function (e) {
-        console.log('bonusTypeChanged!!');
         if ( $('.js-bonus').val() === "")
             return;
         $.ajax({
@@ -47,6 +52,17 @@ $(document).ready(function(){
                 id: $('.js-bonus').val()
             },
             success: function (json) {
+                try {
+                    var json_data = JSON.parse(json);
+                } catch (e) {
+                    console.log(e);
+                    if (e instanceof SyntaxError) {
+                        Routing.setRoutingData(routes);
+                        document.location.href='/amorebono'+Routing.generate('app_login');
+                    } else {
+                        printError(e, false);
+                    }
+                }
                 var json_data = JSON.parse(json);
                 var selling_quantity_input = $('.js-quantity')[0];
                 $(selling_quantity_input).attr('max',json_data.pertsonako_gehienezko_kopurua);

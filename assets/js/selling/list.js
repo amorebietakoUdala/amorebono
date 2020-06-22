@@ -13,8 +13,6 @@ import 'eonasdan-bootstrap-datetimepicker';
 import 'pc-bootstrap4-datetimepicker';
 
 import {createConfirmationAlert} from '../common/alert';
-const routes = require('../../../public/js/fos_js_routes.json');
-import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 
 $(document).ready(function(){
 	console.log("Selling list view!!!!");

@@ -17,6 +17,38 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SellingController extends AbstractController
 {
     /**
+     * @Route("/{_locale}/selling", name="selling_list")
+     */
+    public function list(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $criteria = [
+            'fromDate' => (new DateTime())->modify('-15 day')->format('Y-m-d'),
+            'toDate' => (new DateTime())->format('Y-m-d'),
+        ];
+        $form = $this->createForm(SellingSearchFormType::class,
+            $criteria);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $sellings = $em->getRepository(Selling::class)->findBy($data, ['id' => 'DESC']);
+
+            return $this->render('selling/list.html.twig', [
+            'form' => $form->createView(),
+            'sellings' => $sellings,
+        ]);
+        }
+
+        $sellings = $em->getRepository(Selling::class)->findBy($criteria, ['id' => 'DESC']);
+
+        return $this->render('selling/list.html.twig', [
+            'form' => $form->createView(),
+            'sellings' => $sellings,
+        ]);
+    }
+
+    /**
      * @Route("/{_locale}/selling/new", name="selling_new")
      */
     public function new(Request $request, TranslatorInterface $translator, UserInterface $user = null)
@@ -115,38 +147,6 @@ class SellingController extends AbstractController
             'form' => $form->createView(),
             'readonly' => true,
             'new' => false,
-        ]);
-    }
-
-    /**
-     * @Route("/{_locale}/selling", name="selling_list")
-     */
-    public function list(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $criteria = [
-            'fromDate' => (new DateTime())->modify('-15 day')->format('Y-m-d'),
-            'toDate' => (new DateTime())->format('Y-m-d'),
-        ];
-        $form = $this->createForm(SellingSearchFormType::class,
-            $criteria);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $sellings = $em->getRepository(Selling::class)->findBy($data, ['id' => 'DESC']);
-
-            return $this->render('selling/list.html.twig', [
-            'form' => $form->createView(),
-            'sellings' => $sellings,
-        ]);
-        }
-
-        $sellings = $em->getRepository(Selling::class)->findBy($criteria, ['id' => 'DESC']);
-
-        return $this->render('selling/list.html.twig', [
-            'form' => $form->createView(),
-            'sellings' => $sellings,
         ]);
     }
 }
