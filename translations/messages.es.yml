@@ -45,6 +45,11 @@ selling.notEnoughBonusesRemaining: "No hay suficientes bonos disponibles."
 selling.tooMuchBonusPerPerson: "Esta persona ya ha comprado {erosiak} bonos y el máximo es {gehienezkoa}, no se le puede vender la cantidad solicitada."
 selling.succesfullyRemoved: "La venta se ha borrado correctamente."
 selling.sellingDate: "Fecha de venta"
+selling.totalSoldQuantity: "Vendidos: "
+selling.totalSellingsPrice: "Total: "
+
+bonus.bonusType1: "Negocio"
+bonus.bonusType2: "1er Sector"
 
 person.NAN: "DNI"
 person.izena: "Nombre"

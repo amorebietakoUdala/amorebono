@@ -81,4 +81,23 @@ class SellingRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function countBy(string $from, string $to)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->select('sum(s.quantity) as totalQuantity,sum(s.totalPrice) as totalSellingsPrice');
+        $qb->andWhere('s.sellingDate >= :from');
+        $qb->andWhere('s.sellingDate <= :to');
+        $qb->setParameter('from', $from);
+        $qb->setParameter('to', $to.' 23:59:59');
+        $qb->addGroupBy('s.bonus');
+        $qb->addOrderBy('s.bonus', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+//    public function countByStartAndEndDates(\DateTime $from, \DateTime $to)
+//    {
+//        return $this->countBy($from->format('Y-m-d'), $to->format('Y-m-d'));
+//    }
 }

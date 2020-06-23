@@ -29,6 +29,13 @@
                     {% set url= path('api_bonus') %}
 					{{ form_widget(form.bonus, {'attr': {'class': 'form-control form-control-sm js-bonus', 'data-url': url}}) }}
 				</div>
+                {% for total in totals %}
+                    <div class="col-lg-1">
+                        {{ ('bonus.bonusType'~ loop.index) | trans }}
+                        {{ 'selling.totalSoldQuantity' | trans }}<b>{{ total.totalQuantity }}</b>
+                        {{ 'selling.totalSellingsPrice' | trans }}<b>{{ total.totalSellingsPrice |format_currency('EUR', {fraction_digit: 0}) }}</b>
+                    </div>
+                {% endfor %}
             </div>
 		</div>
 	</div>

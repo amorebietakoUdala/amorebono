@@ -45,6 +45,12 @@ selling.notEnoughBonusesRemaining: "Ez dago bonu nahikorik."
 selling.tooMuchBonusPerPerson: "Persona honek {erosiak} bonu erosi ditu eta gehienez {gehienezkoa} eros daiteke pertsonako, ezin zaizkio eskatutako kopurua saldu."
 selling.succesfullyRemoved: "Salmenta ezabatu egin da."
 selling.sellingDate: "Salmentaren data"
+selling.totalSoldQuantity: "Salduak: "
+selling.totalSellingsPrice: "Guztira: "
+
+
+bonus.bonusType1: "Negozio"
+bonus.bonusType2: "1. sektorea"
 
 person.NAN: "NAN"
 person.izena: "Izena"

@@ -28,13 +28,21 @@ class SellingController extends AbstractController
         ];
         $form = $this->createForm(SellingSearchFormType::class,
             $criteria);
-
+        $totalSolds = $em->getRepository(Selling::class)->countBy(
+            (new DateTime())->modify('-15 day')->format('Y-m-d'),
+            (new DateTime())->format('Y-m-d')
+        );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            $totalSolds = $em->getRepository(Selling::class)->countBy(
+                $data['fromDate'],
+                $data['toDate']
+            );
             $sellings = $em->getRepository(Selling::class)->findBy($data, ['id' => 'DESC']);
 
             return $this->render('selling/list.html.twig', [
+            'totals' => $totalSolds,
             'form' => $form->createView(),
             'sellings' => $sellings,
         ]);
@@ -43,6 +51,7 @@ class SellingController extends AbstractController
         $sellings = $em->getRepository(Selling::class)->findBy($criteria, ['id' => 'DESC']);
 
         return $this->render('selling/list.html.twig', [
+            'totals' => $totalSolds,
             'form' => $form->createView(),
             'sellings' => $sellings,
         ]);
