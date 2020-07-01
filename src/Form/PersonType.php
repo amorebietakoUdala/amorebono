@@ -17,7 +17,7 @@ class PersonType extends AbstractType
             ->add('NAN', null, [
                 'disabled' => $readonly,
                 'constraints' => [
-                    new \App\Validator\IsValidDNI(),
+//                    new \App\Validator\IsValidDNI(),
                     new NotBlank(),
                 ],
                 'label' => 'person.NAN',
