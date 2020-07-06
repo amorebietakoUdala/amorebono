@@ -25,10 +25,6 @@ $(document).ready(function(){
               },
               });
             },
-	    focus: function( event, ui ) {
-	      $( ".js-autocomplete" ).val( ui.item._nan );
-	      return false;
-	    },
 	    select: function( event, ui ) {
 	        $( ".js-autocomplete" ).val( ui.item._nan );
             $( ".js-izena" ).val( ui.item.izena );
