@@ -83,6 +83,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
          * If bindSuccessfull, find the user in the ldap.
          * Then check DB for the same username.
          * If not found in DB add the user
+         * If found and password is not valid must update password in the DB
          */
         if ($bindSuccessfull) {
             $query = $this->ldap->query(
@@ -94,9 +95,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
                 )
             );
             $results = $query->execute()->toArray();
-            $resultsDB = $this->userRepository->findOneBy(['username' => $credentials['username']]);
-            if (null === $resultsDB) {
+            $userDB = $this->userRepository->findOneBy(['username' => $credentials['username']]);
+            if (null === $userDB) {
                 $user = $this->_addUser($results[0], $credentials['password']);
+            } else {
+                if (!$this->passwordEncoder->isPasswordValid($userDB, $credentials['password'])) {
+                    $this->_updatePassword($userDB, $credentials['password']);
+                }
             }
         }
 
@@ -155,6 +160,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $user->setRoles([]);
         $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
 
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $user;
+    }
+
+    private function _updatePassword($user, $password)
+    {
+        $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
