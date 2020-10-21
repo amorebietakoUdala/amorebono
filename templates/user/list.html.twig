@@ -28,9 +28,15 @@
 					<td>{{user.firstName}}</td>
 					<td>{{user.email}}</td>
 					<td>
-						{% for role in user.roles %}
-							{{ role | trans | capitalize }} |
-						{% endfor %}
+                        {% set rolesCount = user.roles | filter((v,k) => v != 'ROLE_USER') | length %}
+                        {% if rolesCount > 0 %}
+                            {% for role in user.roles | filter((v,k) => v != 'ROLE_USER') %}
+                                {{ role | trans | capitalize }} 
+                                {% if loop.index < rolesCount %}|{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {{ 'ROLE_USER' | trans }}
+                        {% endif %}
 					</td>
 					<td>
 					<a href="{{ path ("admin_user_show",{'user': user.id })}}"><i class="fa fa-eye"></i></a>
