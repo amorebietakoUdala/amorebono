@@ -70,7 +70,8 @@ messages.userSaved: "El usuario se ha guardado correctamente"
 messages.userDeleted: "El usuario se ha eliminado correctamente"
 messages.existingUser: "El nombre de usuario o el email ya existe"
 
-ROLE_USER: "Usuario"
+ROLE_USER: "Sin Acceso"
+ROLE_AMOREBONO: "Usuario"
 ROLE_ADMIN: "Administrador"
 
 table.options: "Opciones"

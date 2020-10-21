@@ -71,7 +71,8 @@ messages.userSaved: "Erabiltzailea ondo gorde da"
 messages.userDeleted: "Erabiltzailea ondo ezabatu da"
 messages.existingUser: "Erabiltzailea edo emaila dagoeneko existitzen da."
 
-ROLE_USER: "Erabiltzailea"
+ROLE_USER: "Ezin da sartu"
+ROLE_AMOREBONO: "Erabiltzailea"
 ROLE_ADMIN: "Administratzailea"
 
 table.options: "Aukerak"
