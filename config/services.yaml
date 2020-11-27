@@ -4,11 +4,6 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    domain: '%env(LDAP_ACCOUNTDOMAINNAME)%'
-    ldap_users_dn: '%env(LDAP_USERS_DN)%'
-    ldap_users_uuid: '%env(LDAP_USERS_UUID)%'
-    # Use {username} in the filter where the username has to be replaced.
-    ldap_users_filter: '(&(objectclass=Person)(%env(LDAP_USERS_UUID)%={username}))'    
 
 services:
     Symfony\Component\Ldap\Ldap:

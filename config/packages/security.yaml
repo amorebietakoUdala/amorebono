@@ -10,11 +10,12 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-#        # used to reload user from session & other features (e.g. switch_user)
-        users:
+        # used to reload user from session & other features (e.g. switch_user)
+        amreu_user_provider:
             entity:
                 class: App\Entity\User
                 property: username
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -22,18 +23,19 @@ security:
         main:
             anonymous: true
             lazy: true
+            provider: amreu_user_provider
 
             guard:
                 authenticators:
-                    - App\Security\LoginFormAuthenticator
-                    - App\Security\LdapBasicAuthenticator
-                entry_point: App\Security\LoginFormAuthenticator
-
+                    - amreu.login.form.authenticator
+                entry_point: amreu.login.form.authenticator
+                
             form_login:
-                login_path: app_login
-
+                login_path: user_security_login_check
+                check_path: user_security_login_check
+                
             logout:
-                path: app_logout
+                path: user_security_logout
                 # where to redirect after logout
                 # target: app_any_route
 

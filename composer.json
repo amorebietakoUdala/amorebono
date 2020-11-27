@@ -5,6 +5,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "amorebietakoudala/user-bundle": "0.9.*",
         "friendsofsymfony/jsrouting-bundle": "^2.6",
         "jms/serializer-bundle": "^3.7",
         "sensio/framework-extra-bundle": "^5.5",

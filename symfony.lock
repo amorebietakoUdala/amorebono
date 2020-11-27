@@ -1,4 +1,7 @@
 {
+    "amorebietakoudala/user-bundle": {
+        "version": "dev-main"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
