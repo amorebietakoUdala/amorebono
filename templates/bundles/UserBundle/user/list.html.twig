@@ -1,12 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends "@User/layout.html.twig" %}
+{% trans_default_domain 'user_bundle' %}
 
 {% block title %}List Users{% endblock %}
+
+{% block menu %}
+    {{ include('common/menu.html.twig') }}
+{% endblock %}
 
 {% block body %}
     <main class="container-fluid" >
 	
-{#		{% include '/quota/_searchForm.html.twig' %}
-#}	
 		<div class="container-fluid">
 			{% if users is defined and users|length > 0 %}
 			<table id="taula" class="table bootstrap-table mt-3">
@@ -39,10 +42,10 @@
                         {% endif %}
 					</td>
 					<td>
-					<a href="{{ path ("admin_user_show",{'user': user.id })}}"><i class="fa fa-eye"></i></a>
-					&nbsp;<a href="{{ path ("admin_user_edit",{'user': user.id })}}"><i class="fa fa-edit"></i></a>
+					<a href="{{ path ("admin_user_show",{'id': user.id })}}"><i class="fa fa-eye"></i></a>
+					&nbsp;<a href="{{ path ("admin_user_edit",{'id': user.id })}}"><i class="fa fa-edit"></i></a>
 					&nbsp;<a class="js-delete" href="#" 
-							 data-url="{{ path ('admin_user_delete',{'user': user.id })}}"><i class="fa fa-trash"></i></a>
+							 data-url="{{ path ('admin_user_delete',{'id': user.id })}}"><i class="fa fa-trash"></i></a>
 					</td>
 				</tr>
 				{% endfor %}
@@ -51,7 +54,7 @@
 			{% else %}
 				<div class="mt-2 p-2 border border-black text-center bg-light">{{"messages.results0" | trans }}</div>
 			{% endif %}
-			<span class="pull-right"><a href="{{ path ('admin_user_new') }}" class="btn btn-primary btn-rounded fixed-bottom-right"><i class="fa fa-plus" title='{{ "btn.new" | trans | capitalize }}'></i></a></span>
+			<span class="pull-right"><a href="{{ path ('admin_user_new') }}" class="btn btn-primary btn-rounded fixed-bottom-right"><i class="fa fa-plus" title='{{ "btn.user.new" | trans | capitalize }}'></i></a></span>
 		</div>
     </main>
 {% endblock %}

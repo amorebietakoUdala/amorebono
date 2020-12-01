@@ -6,12 +6,6 @@ import 'tableexport.jquery.plugin/tableExport';
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export'
 import 'bootstrap-table/dist/locale/bootstrap-table-es-ES';
 import 'bootstrap-table/dist/locale/bootstrap-table-eu-EU';
-//import 'bootstrap-datepicker';
-//import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.es';
-//import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.eu';
-//import 'eonasdan-bootstrap-datetimepicker';
-//import 'pc-bootstrap4-datetimepicker';
-
 
 import {createConfirmationAlert} from '../common/alert';
 const routes = require('../../../public/js/fos_js_routes.json');

@@ -1,11 +1,4 @@
-{#{{ form_start(form, {'attr': {'class': '',
-						 'novalidate': 'novalidate'
-						} 
-}) }}
-#}
-{# For some reason you need to let html5 validation on. It seems that leaving the password blank 
-   gives and error.
-#}
+{% trans_default_domain 'user_bundle' %}
 {{ form_start(form) }}
 
 <div class="container-fluid m-0">
@@ -48,12 +41,12 @@
 </div>
 <div class="row justify-content-center mt-2">
 {% if not readonly and not new %}
-	<button class="btn btn-primary ml-2 js-save" type="button" data-url="{{ path('admin_user_edit', {'user': form.vars.value.id}) }}">{{ "btn.save" | trans }}</button>
+	<button class="btn btn-primary ml-2 js-save" type="button" data-url="{{ path('admin_user_edit', {'id': form.vars.value.id}) }}">{{ "btn.user.save" | trans }}</button>
 {% endif %}
 {% if new %}
-	<button class="btn btn-primary ml-2 js-save" type="submit">{{ "btn.save" | trans }}</button>
+	<button class="btn btn-primary ml-2 js-save" type="submit">{{ "btn.user.save" | trans }}</button>
 {% endif %}
-	<button class="btn btn-primary ml-2 js-back" type="button" data-url="{{ path('admin_user_list') }}">{{ "btn.cancel" | trans }}</button>
+	<button class="btn btn-primary ml-2 js-back" type="button" data-url="{{ path('admin_user_list') }}">{{ "btn.user.cancel" | trans }}</button>
 </div>
 
 <!-- Token CSRF -->

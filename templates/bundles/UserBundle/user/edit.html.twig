@@ -1,10 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends "@User/layout.html.twig" %}
+{% trans_default_domain 'user_bundle' %}
 
 {% block title %}List Users{% endblock %}
 
+{% block menu %}
+    {{ include('common/menu.html.twig') }}
+{% endblock %}
+
 {% block body %}
     <main class="container-fluid" >
-		{{ include ('/user/_form.html.twig', {'readonly': readonly, 'new': new , 'password_change': password_change}) }}
+		{{ include ('@User/user/_form.html.twig', {'readonly': readonly, 'new': new , 'password_change': password_change}) }}
     </main>
 {% endblock %}
 

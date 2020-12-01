@@ -28,6 +28,7 @@ security:
             guard:
                 authenticators:
                     - amreu.login.form.authenticator
+                    - amreu.ldap.basic.authenticator
                 entry_point: amreu.login.form.authenticator
                 
             form_login:
