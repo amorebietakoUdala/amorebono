@@ -7,7 +7,7 @@
     {{ include('common/menu.html.twig') }}
 {% endblock %}
 
-{% block body %}
+{% block user_content %}
     <main class="container-fluid" >
 	
 		<div class="container-fluid">
@@ -57,7 +57,7 @@
 			<span class="pull-right"><a href="{{ path ('admin_user_new') }}" class="btn btn-primary btn-rounded fixed-bottom-right"><i class="fa fa-plus" title='{{ "btn.user.new" | trans | capitalize }}'></i></a></span>
 		</div>
     </main>
-{% endblock %}
+{% endblock user_content %}
 
 {% block stylesheets %}
 	{{ parent() }}

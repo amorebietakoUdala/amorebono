@@ -48,7 +48,7 @@ class User extends BaseUser implements AMREUserInterface
     protected $email;
 
     /**
-     * @ORM\Column(type="boolean", options={"default":"1"})
+     * @ORM\Column(type="boolean", options={"default":"1"}, nullable=true)
      */
     protected $activated;
 
