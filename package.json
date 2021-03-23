@@ -26,10 +26,13 @@
         "elliptic": "^6.5.4",
         "eonasdan-bootstrap-datetimepicker": "^4.17.47",
         "font-awesome": "^4.0",
+        "is-svg": "^4.2.2",
         "jquery": "^3.5.1",
         "jquery-ui": "^1.12.1",
+        "jspdf": "^2.3.1",
         "lodash": "^4.17.19",
         "node-forge": "^0.10.0",
+        "node-notifier": "^8.0.1",
         "object-path": "^0.11.5",
         "pc-bootstrap4-datetimepicker": "^4.17.51",
         "popper.js": "^1.16.1",
@@ -38,6 +41,7 @@
         "sweetalert2": "^9.13.1",
         "tableexport.jquery.plugin": "^1.10.19",
         "webpack-dev-server": "^3.11.0",
-        "websocket-extensions": "^0.1.4"
+        "websocket-extensions": "^0.1.4",
+        "xmldom": "^0.5.0"
     }
 }
