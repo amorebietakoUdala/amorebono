@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'title.selling.new' | trans }}{% endblock %}
+{% block title %}
+	{{ 'title.selling.new' | trans }}
+{% endblock %}
 
 {% block body %}
-    <main class="container-fluid" >
-		{{ include ('/selling/_form.html.twig', {'readonly': readonly, 'new': new}) }}
-    </main>
+	<main class="container-fluid">
+		{{ include ('selling/_form.html.twig', {'readonly': readonly, 'new': new}) }}
+	</main>
 {% endblock %}
 
 {% block stylesheets %}

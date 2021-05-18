@@ -1,48 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}List Sellings{% endblock %}
+{% block title %}List Sellings
+{% endblock %}
 
 {% block body %}
-    <main class="container-fluid" >
-        {{ include ('/selling/_searchForm.html.twig') }}
+	<main class="container-fluid">
+		{{ include ('selling/_searchForm.html.twig') }}
 		<div class="container-fluid">
 			{% if sellings is defined and sellings|length > 0 %}
-			<table id="taula" class="table bootstrap-table mt-3">
-			<thead>
-				<tr>
-				<th data-sortable="true">{{"selling.id" | trans | capitalize}}</th>
-				<th data-sortable="true">{{"selling.personNAN" | trans | capitalize}}</th>
-				<th data-sortable="true">{{"selling.quantity" | trans | capitalize}}</th>
-				<th data-sortable="true">{{"selling.bonusType" | trans | capitalize}}</th>
-				<th data-sortable="true">{{"selling.serialNumber" | trans | capitalize}}</th>
-                <th data-sortable="true">{{"selling.sellingDate" | trans | capitalize}}</th>
-				<th data-sortable="true" data-field="options">{{"table.options" | trans | capitalize}}</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for selling in sellings %}
-				<tr>
-					<td>{{selling.id}}</td>
-					<td>{{selling.person.NAN}}</td>
-					<td>{{selling.quantity}}</td>
-					<td>{{selling.bonus.type}}</td>
-					<td>{{selling.serialNumber}}</td>
-                    <td>{{selling.sellingDate is null ? '' : selling.sellingDate | date('Y-m-d H:i:s')}}</td>
-					<td>
-                        <a href="{{ path('selling_show', {'selling': selling.id}) }}"><i class="fa fa-eye"></i></a>
-                        &nbsp;<a class="js-delete" href="#" 
-                                 data-url="{{ path('selling_delete', {'selling': selling.id}) }}"><i class="fa fa-trash"></i></a>
-					</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-			</table>
+				<table id="taula" class="table bootstrap-table mt-3">
+					<thead>
+						<tr>
+							<th data-sortable="true">{{"selling.id" | trans | capitalize}}</th>
+							<th data-sortable="true">{{"selling.personNAN" | trans | capitalize}}</th>
+							<th data-sortable="true">{{"selling.quantity" | trans | capitalize}}</th>
+							<th data-sortable="true">{{"selling.bonusType" | trans | capitalize}}</th>
+							<th data-sortable="true">{{"selling.serialNumber" | trans | capitalize}}</th>
+							<th data-sortable="true">{{"selling.sellingDate" | trans | capitalize}}</th>
+							<th data-sortable="true" data-field="options">{{"table.options" | trans | capitalize}}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for selling in sellings %}
+							<tr>
+								<td>{{selling.id}}</td>
+								<td>{{selling.person.NAN}}</td>
+								<td>{{selling.quantity}}</td>
+								<td>{{selling.bonus.type}}</td>
+								<td>{{selling.serialNumber}}</td>
+								<td>{{selling.sellingDate is null ? '' : selling.sellingDate | date('Y-m-d H:i:s')}}</td>
+								<td>
+									<a href="{{ path('selling_show', {'selling': selling.id}) }}">
+										<i class="fa fa-eye"></i>
+									</a>
+									&nbsp;<a class="js-delete" href="#" data-url="{{ path('selling_delete', {'selling': selling.id}) }}">
+										<i class="fa fa-trash"></i>
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 			{% else %}
 				<div class="mt-2 p-2 border border-black text-center bg-light">{{"messages.results0" | trans }}</div>
 			{% endif %}
-			<span class="pull-right"><a href="{{ path('selling_new') }}" class="btn btn-primary btn-rounded fixed-bottom-right"><i class="fa fa-plus" title='{{ "btn.new" | trans | capitalize }}'></i></a></span>
+			<span class="pull-right">
+				<a href="{{ path('selling_new') }}" class="btn btn-primary btn-rounded fixed-bottom-right">
+					<i class="fa fa-plus" title='{{ "btn.new" | trans | capitalize }}'></i>
+				</a>
+			</span>
 		</div>
-    </main>
+	</main>
 {% endblock %}
 
 {% block stylesheets %}
