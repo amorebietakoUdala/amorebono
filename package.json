@@ -4,11 +4,13 @@
         "@symfony/webpack-encore": "^1.2",
         "core-js": "^3.0.0",
         "file-loader": "^6.0.0",
+        "jspdf": "^2.0.0",
         "regenerator-runtime": "^0.13.2",
         "sass": "^1.32.8",
         "sass-loader": "^11.0.0",
         "stimulus": "^2.0.0",
-        "webpack-notifier": "^1.6.0"
+        "webpack-notifier": "^1.6.0",
+        "ws": "^7.4.6"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -29,7 +31,6 @@
         "is-svg": "^4.2.2",
         "jquery": "^3.5.1",
         "jquery-ui": "^1.12.1",
-        "jspdf": "^2.3.1",
         "lodash": "^4.17.21",
         "node-forge": "^0.10.0",
         "node-notifier": "^8.0.1",
