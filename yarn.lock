@@ -957,10 +957,10 @@
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"@symfony/webpack-encore@1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.6.1.tgz#bcf1cdeffb05486eea4c7531c4941e2b4af543bc"
-  integrity sha512-N00IwDHK88SfnH5GYeXapSpZ6VSZOITL6xeMt9VzP4m9HpBk8s7yGRRJs4quj7VIsO/j3qM8EX/1J4knw7n/Kg==
+"@symfony/webpack-encore@^1.8.1":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.8.1.tgz#b28b574e33fefe0b7a46edc4b205ef93299c276d"
+  integrity sha512-7JOZvEXFuZfJhyC2jcMio59c19EwygkcRUF9/WYJkp0A4cK+BlmLnZwDTBdzc7+hXJD8DfqD3DGguCkBibiUPQ==
   dependencies:
     "@babel/core" "^7.7.0"
     "@babel/plugin-syntax-dynamic-import" "^7.0.0"
@@ -980,10 +980,11 @@
     resolve-url-loader "^3.1.2"
     semver "^7.3.2"
     style-loader "^2.0.0"
+    sync-rpc "^1.3.6"
     terser-webpack-plugin "^5.1.1"
     tmp "^0.2.1"
     webpack "^5.35"
-    webpack-cli "^4"
+    webpack-cli "^4.9.1"
     webpack-dev-server "^4.0.0"
     yargs-parser "^20.2.4"
 
@@ -1373,6 +1374,14 @@ adjust-sourcemap-loader@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/adjust-sourcemap-loader/-/adjust-sourcemap-loader-3.0.0.tgz#5ae12fb5b7b1c585e80bbb5a63ec163a1a45e61e"
   integrity sha512-YBrGyT2/uVQ/c6Rr+t6ZJXniY03YtHGMJQYal368burRGYKqhx9qGTWqcBU5s1CwYY9E/ri63RYyG1IacMZtqw==
+  dependencies:
+    loader-utils "^2.0.0"
+    regex-parser "^2.2.11"
+
+adjust-sourcemap-loader@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/adjust-sourcemap-loader/-/adjust-sourcemap-loader-4.0.0.tgz#fc4a0fd080f7d10471f30a7320f25560ade28c99"
+  integrity sha512-OXwN5b9pCUXNQHJpwwD2qP40byEmSgzj8B4ydSN0uMNYWiFmJ6x6KwUllMmfk8Rwu/HJDFR7U8ubsWBoN0Xp0A==
   dependencies:
     loader-utils "^2.0.0"
     regex-parser "^2.2.11"
@@ -2967,6 +2976,11 @@ get-intrinsic@^1.0.2:
     has "^1.0.3"
     has-symbols "^1.0.1"
 
+get-port@^3.1.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/get-port/-/get-port-3.2.0.tgz#dd7ce7de187c06c8bf353796ac71e099f0980ebc"
+  integrity sha1-3Xzn3hh8Bsi/NTeWrHHgmfCYDrw=
+
 get-stream@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-6.0.1.tgz#a262d8eef67aced57c2852ad6167526a43cbf7b7"
@@ -4377,7 +4391,7 @@ postcss@7.0.36:
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-postcss@^8.2.10, postcss@^8.2.15, postcss@^8.2.9:
+postcss@^8.2.13, postcss@^8.2.14, postcss@^8.2.15, postcss@^8.2.9:
   version "8.4.5"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.5.tgz#bae665764dfd4c6fcc24dc0fdf7e7aa00cc77f95"
   integrity sha512-jBDboWM8qpaqwkMwItqTQTiFikhs/67OYVvblFFTM7MrZjt6yMKd6r2kgXizEbTTljacm4NldIlZnhbjr84QYg==
@@ -4624,6 +4638,17 @@ resolve-url-loader@^3.1.2:
     postcss "7.0.36"
     rework "1.0.1"
     rework-visit "1.0.0"
+    source-map "0.6.1"
+
+resolve-url-loader@^5:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/resolve-url-loader/-/resolve-url-loader-5.0.0.tgz#ee3142fb1f1e0d9db9524d539cfa166e9314f795"
+  integrity sha512-uZtduh8/8srhBoMx//5bwqjQ+rfYOUq8zC9NrMUGtjBiGTtFJM42s58/36+hTqeqINcnYe08Nj3LkK9lW4N8Xg==
+  dependencies:
+    adjust-sourcemap-loader "^4.0.0"
+    convert-source-map "^1.7.0"
+    loader-utils "^2.0.0"
+    postcss "^8.2.14"
     source-map "0.6.1"
 
 resolve-url@^0.2.1:
@@ -5215,6 +5240,13 @@ sweetalert2@^9.13.1:
   resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-9.17.2.tgz#7f33ce157a64c303d2ca98863c9a3f437e5f1187"
   integrity sha512-HkpPZVMYsnhFUBLdy/LvkU9snggKP3VAuSVnPhVXjxdg02lWbFx0W8H3m7A+WMWw2diXZS1wIa4m67XkNxdvew==
 
+sync-rpc@^1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/sync-rpc/-/sync-rpc-1.3.6.tgz#b2e8b2550a12ccbc71df8644810529deb68665a7"
+  integrity sha512-J8jTXuZzRlvU7HemDgHi3pGnh/rkoqR/OZSjhTyyZrEkkYQbk7Z33AXp37mkPfPpfdOuj7Ex3H/TJM1z48uPQw==
+  dependencies:
+    get-port "^3.1.0"
+
 tableexport.jquery.plugin@^1.10.19:
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/tableexport.jquery.plugin/-/tableexport.jquery.plugin-1.21.0.tgz#324adfe7853fc3131283dd281a8f3b62f1053865"
@@ -5460,7 +5492,7 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-webpack-cli@^4:
+webpack-cli@^4.9.1:
   version "4.9.2"
   resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-4.9.2.tgz#77c1adaea020c3f9e2db8aad8ea78d235c83659d"
   integrity sha512-m3/AACnBBzK/kMTcxWHcZFPrw/eQuY4Df1TxvIWfWM2x7mRqBQCqKEd96oCUa9jkapLBaFfRce33eGDb4Pr7YQ==
