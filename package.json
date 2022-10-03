@@ -1,5 +1,7 @@
 {
     "devDependencies": {
+        "@eonasdan/tempus-dominus": "6.0.1",
+        "@popperjs/core": "^2.11.6",
         "@symfony/stimulus-bridge": "^2.0.0",
         "@symfony/webpack-encore": "^1.8.1",
         "core-js": "^3.0.0",
@@ -21,20 +23,17 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^6.2.0",
         "bazinga-translator": "^3.0.1",
         "bootstrap": "^4.5.0",
-        "bootstrap-datepicker": "^1.9.0",
         "bootstrap-table": "^1.20.2",
         "elliptic": "^6.5.4",
-        "eonasdan-bootstrap-datetimepicker": "^4.17.47",
-        "font-awesome": "^4.0",
         "is-svg": "^4.2.2",
         "jquery": "^3.5.1",
         "jquery-ui": "^1.13.2",
         "jspdf": "^2.0.0",
         "lodash": "^4.17.21",
         "node-notifier": "^8.0.1",
-        "pc-bootstrap4-datetimepicker": "^4.17.51",
         "popper.js": "^1.16.1",
         "postcss": "^8.2.13",
         "serialize-javascript": "^3.1.0",

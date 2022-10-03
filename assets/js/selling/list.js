@@ -6,17 +6,15 @@ import 'tableexport.jquery.plugin';
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export';
 import 'bootstrap-table/dist/locale/bootstrap-table-es-ES';
 import 'bootstrap-table/dist/locale/bootstrap-table-eu-EU';
-import 'bootstrap-datepicker';
-import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.es';
-import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.eu';
-import 'eonasdan-bootstrap-datetimepicker';
-import 'pc-bootstrap4-datetimepicker';
+import tempusDominus from '@eonasdan/tempus-dominus';
+import customDateFormat from '@eonasdan/tempus-dominus/dist/plugins/customDateFormat';
+
+//import '@eonasdan/tempus-dominus/dist/plugins/customDateFormat';
 
 import { createConfirmationAlert } from '../common/alert';
 
 $(document).ready(function() {
-    console.log("Selling list view!!!!");
-
+    let current_locale = $('html').attr('lang') + '-' + $('html').attr('lang').toUpperCase();
     $('#taula').bootstrapTable({
         cache: false,
         showExport: true,
@@ -34,7 +32,7 @@ $(document).ready(function() {
         pageSize: 10,
         pageList: [10, 25, 50, 100],
         sortable: true,
-        locale: $('html').attr('lang') + '-' + $('html').attr('lang').toUpperCase(),
+        locale: current_locale,
     });
     var $table = $('#taula');
     $(function() {
@@ -44,27 +42,30 @@ $(document).ready(function() {
             });
         });
     });
-    $.extend(true, $.fn.datetimepicker.defaults, {
-        icons: {
-            time: 'fa fa-clock-o',
-            date: 'fa fa-calendar',
-            up: 'fa fa-arrow-up',
-            down: 'fa fa-arrow-down',
-            previous: 'fa fa-chevron-left',
-            next: 'fa fa-chevron-right',
-            today: 'fa fa-calendar-check-o',
-            clear: 'fa fa-trash',
-            close: 'fa fa-times'
-        }
-    });
-    $('.js-fromDate').datetimepicker({
-        locale: $('html').attr('lang') + '-' + $('html').attr('lang'),
-        format: 'YYYY-MM-DD',
-    });
-    $('.js-toDate').datetimepicker({
-        locale: $('html').attr('lang') + '-' + $('html').attr('lang'),
-        format: 'YYYY-MM-DD',
-    });
+    
+    tempusDominus.extend(customDateFormat);
+    const options = {
+      display: {
+        buttons: {
+          close: true,
+        },
+        components: {
+          decades: false,
+          year: true,
+          month: true,
+          date: true,
+          clock: false,
+        },
+      },
+      localization: {
+        locale: current_locale,
+        dayViewHeaderFormat: { month: 'long', year: 'numeric' },
+        format: 'yyyy-MM-dd',
+      },
+    };
+    let datepicker1 = new tempusDominus.TempusDominus(document.getElementById('selling_search_form_fromDate'), options);
+    let datepicker2 = new tempusDominus.TempusDominus(document.getElementById('selling_search_form_toDate'), options);
+
     $(document).on('click', '.js-delete', function(e) {
         e.preventDefault();
         var url = e.currentTarget.dataset.url;
