@@ -48,6 +48,7 @@ $(document).ready(function() {
       display: {
         buttons: {
           close: true,
+          clear: true,
         },
         components: {
           decades: false,
