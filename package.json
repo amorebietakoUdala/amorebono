@@ -11,7 +11,7 @@
         "bootstrap-table": "^1.20.2",
         "core-js": "^3.0.0",
         "file-loader": "^6.0.0",
-        "jquery": "^3.5.1",
+        "jquery": "^3.6.1",
         "jquery-ui": "^1.13.2",
         "loader-utils": "^3.2.1",
         "node-notifier": "^8.0.1",
@@ -38,6 +38,12 @@
     "resolutions": {
         "babel-loader": "^9.0",
         "loader-utils": "^2.0.4",
-        "json5": "^2.2.2"
+        "json5": "^2.2.2",
+        "jquery": "3.6.1",
+        "semver": "^7.5.2",
+        "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
+    },
+    "overrides": {
+        "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
     }
 }
