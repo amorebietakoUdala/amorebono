@@ -60,7 +60,7 @@ a {
 
 .bonus-list {
     height: 100%;
-}
+ }
 
 .bonus {
     height: 100%;
@@ -83,10 +83,6 @@ a {
         font-size: 0.8rem;
     }
 
-    #izena {
-        display: none;
-    }
-
     #campaignTitle {
         font-size: 0.8rem;
     }
@@ -106,5 +102,16 @@ a {
 
     .bonus-list {
         height: auto;
+        width: auto;
+    }
+}
+
+@media (max-width: 400px) {
+    .bonus-list {
+        width: 100%;
+    }
+
+    #izena {
+        display: none;
     }
 }
