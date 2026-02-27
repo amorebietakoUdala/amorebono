@@ -1,0 +1,27 @@
+{
+  "name": "amorebietakoudala/nik-bundle",
+  "description": "Integración de NIK para Symfony",
+  "type": "symfony-bundle",
+  "license": "proprietary",
+  "autoload": {
+      "psr-4": {
+          "AMREU\\NIKBundle\\": "src/"
+      }
+  },
+  "extra": {
+    "symfony": {
+      "bundle": "AMREU\\NIKBundle\\NIKBundle"
+    }
+  },
+  "require": {
+    "php": ">=8.2",
+    "symfony/framework-bundle": "^6.4|^7.0",
+    "symfony/http-foundation": "^6.4|^7.0",
+    "symfony/http-kernel": "^6.4|^7.0",
+    "symfony/routing": "^6.4|^7.0",
+    "league/oauth2-client": "^2.7"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "version": "0.1.0"
+}

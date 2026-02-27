@@ -1,0 +1,110 @@
+@import '~bootstrap';
+@import '@fortawesome/fontawesome-free';
+
+header {
+    display: grid;
+    grid-template-columns: 150px auto 200px 100px;
+    grid-template-areas: "logo titulo erabiltzailea idioma";
+    justify-content: space-beetween;
+    text-align: center;
+    align-items: center;
+}
+
+main {
+	font-size: 0.9rem;
+    width: 100vw;
+}
+
+.logo {
+    height: 100px;
+    width: auto;
+}
+
+.titulua {
+    display: flex;
+    text-align: center;
+}
+
+body {
+    background-color: white;
+}
+
+tbody {
+    line-height: 1rem;
+}
+
+.fixed-width-300px {
+    width: 300px;
+}
+
+.fixed-height-250px {
+    min-height: 250px;
+    height: 250px;
+}
+
+.card-rounded {
+    border-radius: 10% !important;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+#my-status-card {
+    display: block;
+}
+
+#my-status-toggle {
+    display: none;
+}
+
+.bonus-list {
+    height: 100%;
+}
+
+.bonus {
+    height: 100%;
+}
+
+@media (max-width: 900px) {
+    .logo {
+        height: 50px;
+        width: auto;
+    }
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    #my-status-toggle {
+        display: block;
+    }
+
+    #span-erabiltzailea {
+        font-size: 0.8rem;
+    }
+
+    #izena {
+        display: none;
+    }
+
+    #campaignTitle {
+        font-size: 0.8rem;
+    }
+
+    .fixed-width-300px {
+        width: 150px;
+    }
+
+    .fixed-height-250px {
+        min-height: 150px;
+        height: 150px;
+    }
+
+    .bonus {
+        height: auto;
+    }
+
+    .bonus-list {
+        height: auto;
+    }
+}

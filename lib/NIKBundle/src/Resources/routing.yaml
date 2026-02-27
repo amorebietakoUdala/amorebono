@@ -1,0 +1,3 @@
+GiltzaBundle:
+    resource: "@NIKBundle/Controller/"
+    type: attribute

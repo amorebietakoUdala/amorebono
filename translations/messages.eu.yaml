@@ -1,0 +1,26 @@
+message.appTitle: "Amorebono"
+
+title.campaignIndex: "Kanpainak"
+title.authSelector: "Amorebono - Hautatu autentikazio modua"
+title.myStatus: "Nire egoera"
+
+link.logout: "Salir"
+
+btn.buy: "Erosi"
+btn.download: "PDFa jaitsi"
+btn.resend: "Berbidali"
+btn.refresh: "Eguneratu"
+
+label.email: "Emaila (Hautazkoa)"
+label.sinvalidar: "Epe eta erabili barik"
+label.restantes:  "Eskuratu barik"
+
+message.noActiveCampaigns: "Ez kanpainarik oraingoz"
+message.noBonosSelected: "Behintzat bono mota bat hautatu behar duzu"
+message.tooMuchBonoSelected: "Geratzen zaizkizun baino bono gehiago eskatu dituzu: (%nombreTipo1%:  Geratzen zaizkizu: %restantesTipo1%, Eskatutakoak: %solicitadosTipo1%) (%nombreTipo2%: Geratzen zaizkizu: %restantesTipo2%, Eskatutakoak: %solicitadosTipo2%)"
+message.bonosAdquiredSuccessfully: "Bonoak behar bezala eskuratu dira"
+message.bonoDuration: "* Bonuek %duration% eguneko iraunpena dute"
+message.youAquiredAllYourBonos: "Dagozkizun bono guztiak eskuratu dituzu jadanik"
+message.emailNeeded: "Email bat sartu behar duzu bonoak berbidaltzeko"
+
+'No quedan bonos por consumir': "Ez dago '%tipoBono%' motako bonurik"

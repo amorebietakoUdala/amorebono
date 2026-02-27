@@ -1,0 +1,27 @@
+message.appTitle: "Amorebono"
+
+link.logout: "Salir"
+
+title.campaignIndex: "Campañas"
+title.authSelector: "Amorebono - Seleccione modo de autenticación"
+title.myStatus: "Mi situación"
+
+btn.buy: "Comprar"
+btn.download: "Descargar PDF"
+btn.resend: "Reenviar"
+btn.refresh: "Refrescar"
+
+label.email: "Email (Opcional)"
+label.sinvalidar: "Vigentes sin utilizar"
+label.restantes: "Restantes"
+
+message.noActiveCampaigns: "No hay campañas activas"
+message.noBonosSelected: "Debe seleccionar al menos un tipo de bono"
+message.tooMuchBonoSelected: "Ha solicitado más bonos de los que le quedan: (%nombreTipo1%:  Restantes: %restantesTipo1%, Solicitados: %solicitadosTipo1%) (%nombreTipo2%: Restantes: %restantesTipo2%, Solicitados: %solicitadosTipo2%)"
+message.bonosAdquiredSuccessfully: "Los bonos se han obtenido correctamente"
+message.bonoDuration: "* Los bonos tienen una vigencia de %duration% días"
+message.youAquiredAllYourBonos: "Ya ha adquirido todos los bonos que le corresponden"
+message.emailNeeded: "Debe introducir un email para poder reenviarle los bonos"
+
+'No quedan bonos por consumir': "No quedan bonos de tipo '%tipoBono%'"
+

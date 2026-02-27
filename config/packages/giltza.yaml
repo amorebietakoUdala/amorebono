@@ -1,0 +1,17 @@
+giltza:
+    provider:
+      clientId: '%env(CLIENT_ID)%'
+      clientSecret: '%env(CLIENT_SECRET)%'
+      urlAuthorize: '%env(ENDPOINT_ROOT)%/trustedx-authserver/oauth/izenpe'
+      urlAccessToken: '%env(ENDPOINT_ROOT)%/trustedx-authserver/oauth/izenpe/token'
+      urlResourceOwnerDetails: '%env(ENDPOINT_ROOT)%/trustedx-resources/openid/v1/users/me'
+      # redirectUri: 'amreu_giltza_login' # This should be the route name or ABSOLUTE URL to the route that handles the callback from Giltza. It must match the redirect URI registered in Giltza.
+
+    controller:
+        successUri: 'app_campaign_index'
+        # response_type: 'code'
+        # scope: 'urn:izenpe:identity:global'
+        # prompt: 'login'
+        # ui_locales is read from session to mantain language preference from the user. Not needed anymore.
+        # ui_locales: 'eu' 
+        # acr_values: 'urn:safelayer:tws:policies:authentication:flow:bakq'

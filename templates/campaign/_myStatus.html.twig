@@ -1,0 +1,10 @@
+<div class="card card-body">
+   <div class="card-title"><h4>{{ 'title.myStatus' | trans | capitalize }}</h4></div>
+   <ul class="list-group list-group-flush">
+      <li class="list-group-item"><b>{{ nombresBonos[1] }} ({{ 'label.restantes' | trans }})</b>:&nbsp;{{ disponibles.restantesTipo1 }}</li>
+      <li class="list-group-item"><b>{{ nombresBonos[2] }} ({{ 'label.restantes' | trans }})</b>:&nbsp;{{ disponibles.restantesTipo2 }}</li>
+      <li class="list-group-item"><b>{{ 'label.sinvalidar' | trans | capitalize }}</b>:&nbsp;{{ disponibles.sinvalidar }}</li>
+      <li class="list-group-item"><b>{{ 'message.bonoDuration' | trans ({'%duration%': campaign.duracionBonoDias}) }}</b></li>
+   </ul>
+   <div class="col-auto text-center mt-1"><a class="btn btn-secondary" href="{{ path('app_campaign_index') }}">{{ "btn.refresh" | trans | capitalize }}</a></div>
+</div>

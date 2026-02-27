@@ -1,0 +1,3 @@
+giltza:
+  resource: "@GiltzaBundle/Resources/config/routing.yaml"
+  prefix: /
