@@ -68,9 +68,6 @@
                   </div>
                </div>
                <div class="container-fluid px-2 mt-2">
-                  {# <div class="d-flex justify-content-center mb-2">
-                     <div><b>{{ 'message.bonoDuration' | trans ({'%duration%': campaign.duracionBonoDias}) }}</b></div>
-                  </div> #}
                   <div class="row d-flex justify-content-start align-items-center col-lg-12">
                      <div class="col-lg-2 col-md-4 mb-1">
                         {{ form_row(form.email, { 'attr': { 'class' : 'form-control' } }) }}
@@ -88,7 +85,6 @@
                      {% endif %}
                   </div>
                </div>
-            {# {{ form_end(form, {'render_rest': false}) }} #}
             {{ form_end(form) }}
          {% endif %}
       </div>

@@ -22,7 +22,7 @@ services:
     AMREU\NikBundle\Controller\NikController:
         class: AMREU\NikBundle\Controller\NikController
         tags: ['controller.service_arguments']
-        arguments: ['@AMREU\NikBundle\Service\NikService', '$successUri']
+        arguments: ['@AMREU\NikBundle\Service\NikService', '$successUri', '$timeout']
             
 
             

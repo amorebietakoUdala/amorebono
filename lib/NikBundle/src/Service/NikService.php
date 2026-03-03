@@ -17,6 +17,7 @@ class NikService
       'login' => '/v1/login',
       'threads' => '/v1/threads',
       'credentials' => '/v1/credentials',
+      'checkConnReq' => '/v1/checkConnReq',
    ];
 
    public function __construct(
@@ -28,11 +29,6 @@ class NikService
    {
    }
 
-    /**
-     * HTTP dei orokorra JSON → array bihurtuta.
-     *  - 2xx: array|null (204 kasuan null)
-     *  - bestela: null edo salbuespena jaurti (behean aukeran)
-     */
     private function requestJson(string $method, string $path, array $options = []): ?array
     {
         $options['headers'] = array_merge(
@@ -53,30 +49,31 @@ class NikService
             if ($status === Response::HTTP_NO_CONTENT) {
                 return null;
             }
-
+            $this->logger->debug("NIKService call successfull: at path: $path method: $method");
+            $this->logger->debug('Response:'.$response->getContent(true));
             return $response->toArray(true);
 
         } catch (HttpExceptionInterface | TransportExceptionInterface | TimeoutExceptionInterface $e) {
+            $message = $e->getMessage();
+            $this->logger->error("There was an error on NIK Service: $message");
             return null;
         } 
     }
-
 
    public function invitation(): array|null
    {
       return $this->requestJson('POST', NikService::NIK_SERVICE_PATHS['invitation']);
    }  
 
+   public function getInvitation(?string $inviId): ?array
+   {
+      if ($inviId === null || $inviId === '') {
+         return null;
+      }
 
-    public function getInvitation(?string $inviId): ?array
-    {
-        if ($inviId === null || $inviId === '') {
-            return null;
-        }
-
-        $path = rtrim(NikService::NIK_SERVICE_PATHS['invitation'], '/').'/'.rawurlencode($inviId);
-        return $this->requestJson('GET', $path);
-    }
+      $path = rtrim(NikService::NIK_SERVICE_PATHS['invitation'], '/').'/'.rawurlencode($inviId);
+      return $this->requestJson('GET', $path);
+   }
 
    public function login(
       string $connUUID,
@@ -86,6 +83,7 @@ class NikService
       string $locale,
       ?string $callback = null
    ): ?array {
+      $this->logger->debug("NIKService login started: connUUID:$connUUID, petID:$petID, locale:$locale, callback:$callback");
       if ($connUUID === '' || $petID === '') {
          return null;
       }
@@ -123,13 +121,38 @@ class NikService
 
    
    public function getThread($threadId): array|null {
-        if ($threadId === null || $threadId === '') {
-            return null;
-        }
-
-        $path = rtrim(NikService::NIK_SERVICE_PATHS['threads'], '/').'/'.rawurlencode($threadId);
-        return $this->requestJson('GET', $path);
+      if ($threadId === null || $threadId === '') {
+         return null;
+      }
+      $this->logger->debug("NIKService getThread: threadID:$threadId");
+      $path = rtrim(NikService::NIK_SERVICE_PATHS['threads'], '/').'/'.rawurlencode($threadId);
+      return $this->requestJson('GET', $path);
    } 
+
+   public function checkConnReq($payload, $locale): array|null {
+      $this->logger->debug("NIKService checkConnReq: payload:$payload");
+      $payload = [
+         'payload' => $payload
+      ];
+
+      $headers = [
+         'Accept'           => 'application/json',
+         'Content-Type'     => 'application/json',
+         'X-APP-APIKEY'     => $this->apiKey,
+         'Accept-Language'  => $locale,
+      ];
+
+      return $this->requestJson(
+         'POST',
+         NikService::NIK_SERVICE_PATHS['checkConnReq'],
+         [
+               'headers' => $headers,
+               'json'    => $payload,
+               'timeout' => 10, // nahi izanez gero
+         ]
+      );
+      return $this->requestJson('POST', $path);
+   }
 
    // public function getCredentials($credentialId): array|null {
    //    $body = null;
@@ -146,21 +169,4 @@ class NikService
 
    //    return $body;
    // } 
-
-   //  #[Route(path: '/nik/success', name: 'amreu_nik_success')]
-   //  public function success(Request $request): Response
-   //  {
-   //      $giltzaUser = $request->getSession()->get("giltzaUser");
-   //      if (!$giltzaUser) {
-   //          return $this->redirectToRoute('amreu_giltza_login');
-   //      }
-   //      return $this->json($giltzaUser);
-   //  }
-
-   //  #[Route(path: '/logout', name: 'amreu_nik_logout')]
-   //  public function logout(Request $request): Response
-   //  {
-   //      $request->getSession()->invalidate();
-   //      return $this->json('logout');
-   //  }
 }

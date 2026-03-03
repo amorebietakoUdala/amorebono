@@ -3,3 +3,5 @@ nik:
    successUri: '%env(NIK_SUCCESS_URI)%'
    # Only needed when it's different from prod environment throw jaso network
    endPoint: 'http://svc.integracion.pru.ejgv.jaso/ctxweb/ad56pbmiddleware'
+   # Timeout in mileseconds for waiting pages
+   timeout: 4000

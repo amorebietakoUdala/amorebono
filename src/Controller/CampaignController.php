@@ -48,8 +48,8 @@ final class CampaignController extends AbstractController
     #[Route('/{_locale}/', name: 'app_campaign_index', requirements: ['_locale' => 'es|eu'], defaults: ['_locale' => 'eu'], priority: 0)]
     public function index(Request $request): Response
     {
-        if (null !== $this->getAmorebonoUser($request)) {
-            $this->redirectToRoute('app_auth_selector');
+        if (null === $this->getAmorebonoUser($request)) {
+            return $this->redirectToRoute('app_auth_selector');
         }
         $request->getSession()->set("_locale", $request->getLocale());
         $user = $this->getAmorebonoUser($request);

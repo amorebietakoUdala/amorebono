@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('apiKey')->info('Nik Api Key')->isRequired()->end()
                 ->scalarNode('successUri')->info('path to redirect after a successfull login')->isRequired()->end()
                 ->scalarNode('endPoint')->defaultValue('http://svc.integracion.ejgv.jaso/ctxweb/ad56pbmiddleware')->end()
+                ->scalarNode('timeout')->defaultValue('5000')->end()
             ->end();
         //         ->arrayNode('controller')
         //             ->children()

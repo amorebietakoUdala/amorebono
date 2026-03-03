@@ -28,6 +28,7 @@ class NikExtension extends Extension
 
       $definition2 = $container->getDefinition(NikController::class);
       $definition2->setArgument('$successUri', $config['successUri']);
+      $definition2->setArgument('$timeout', $config['timeout']);
 
       // $definition2 = $container->getDefinition(GiltzaController::class);
       // $definition2->setArgument('$options', $config['controller']);

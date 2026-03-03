@@ -1,17 +1,24 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'nik' %}
 
 {% block body %}
    {% if taxId != null %}
       Your TaxId is {{ taxId }}
    {% else %}
-      {{ 'message.nikAceptationWait' | trans }}
+      <div class="container-fluid d-flex justify-content-center align-items-center">
+         <div><img src="{{ asset('build/images/spinner.gif') }}"><br></div>
+      </div>
+      <div class="container-fluid d-flex justify-content-center align-items-center">
+         <div class="d-lg-block d-none d-md-none">
+            {{ 'message.nikAceptationWait' | trans }}
+         </div>
+      </div>
    {% endif %}
-   {{ dump(threadStatus, threadId) }}
    {% if ( threadId != null or ( threadId != null and threadStatus.status == 0 ) ) %}
       <script type='text/javascript'>
          setTimeout(() => {
             window.location.href="{{ absolute_url(path('amreu_nik_get_thread', { 'threadId' : threadId })) }}"
-         }, 5000); // 5000 ms = 5 segundos
+         }, {{timeout}});
       </script>
    {% endif %}   
 {% endblock body %}

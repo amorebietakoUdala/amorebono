@@ -3,11 +3,11 @@
 namespace AMREU\NikBundle\Controller;
 
 use AMREU\NikBundle\Service\NikService;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route(path: '/nik')]
 class NikController extends AbstractController
@@ -15,6 +15,7 @@ class NikController extends AbstractController
    public function __construct(
       private NikService $nikService,
       private string $successUri,
+      private int $timeout = 5000,
    )
    {
    }
@@ -25,10 +26,10 @@ class NikController extends AbstractController
       $invitationRequest = $this->nikService->invitation();
       $session = $request->getSession();
       $session->set('NikInvitation', $invitationRequest);
-      $invitation = null;
       return $this->render('@Nik/invitation.html.twig', [
          'invitationRequest' => $invitationRequest,
-         'invitation' => $invitation,
+         'invitation' => null,
+         'timeout' => $this->timeout,
       ]);
    }
 
@@ -38,10 +39,7 @@ class NikController extends AbstractController
       $invitationRequest = $request->getSession()->get('NikInvitation');
 
       if ( null === $inviId && null === $invitationRequest ) {
-         $invitationRequest = $this->nikService->invitation();
-         $session = $request->getSession();
-         $session->set('NikInvitation', $invitationRequest);
-         $invitation = null;
+         return $this->redirectToRoute('amreu_nik_post_invitation');
       } else {
          $invitation = $this->nikService->getInvitation($inviId);
          if ($invitation !== null && $invitation['status'] === 1 ) {
@@ -61,19 +59,30 @@ class NikController extends AbstractController
       return $this->render('@Nik/invitation.html.twig', [
          'invitationRequest' => $invitationRequest,
          'invitation' => $invitation,
+         'timeout' => $this->timeout,
       ]);
    }
 
-   // #[Route(path: '/login', name: 'amreu_nik_login')]
-   // public function login(Request $request): Response
-   // {
-   //    $query = $request->query->all();
-
-   //    return $this->render('@Nik/login.html.twig', [
-   //       "query" => $query,
-   //       "response" => $response,
-   //    ]);
-   // }
+   #[Route(path: '/login', name: 'amreu_nik_internal_login', methods:['POST', 'GET'])]
+   public function login(Request $request): Response
+   {
+      $payload = $request->query->get('payload');
+      $petId = $request->query->get('petID');
+      $locale = $request->query->get('locale');
+      $request->getSession()->set("_locale", $locale);
+      $connection = $this->nikService->checkConnReq($payload, $request->getLocale());
+      if ( null !== $connection ) {
+         $connUUID = $connection['connUUID'];
+         $loginStatus = $this->nikService->login($connUUID, $petId, 'Amorebonos', 'Amorebonoak', $locale);
+         $session = $request->getSession();
+         $session->set('NikLoginRequest', $loginStatus);
+         return $this->redirectToRoute('amreu_nik_get_thread', [
+            'threadId' => $loginStatus['threadID'],
+            '_locale' => $locale,
+         ]);
+      }
+      throw new Exception('Could no login');
+   }
 
    #[Route(path: '/thread/{threadId}', name: 'amreu_nik_get_thread')]
    public function getThread(Request $request, string|null $threadId = null): Response
@@ -82,10 +91,9 @@ class NikController extends AbstractController
       $threadStatus = $this->nikService->getThread($threadId);
       if (null === $threadStatus) {
          $this->addFlash('error', 'message.problemCallingNikApp');
+         $request->getSession()->invalidate();
       }
-      dump($threadStatus);      
       if ($threadStatus !== null && $threadStatus['status'] !== 0 ) {
-         dump($threadStatus['status'], $threadStatus['payload'], $threadStatus['payload']['answer'], $threadStatus['payload']['answer']['taxID']);
          if ($threadStatus['status'] === 1 && isset($threadStatus['payload']) && isset($threadStatus['payload']['answer']) ) {
             $taxId = $threadStatus['payload']['answer']['taxID'];
             $request->getSession()->set('nikUser',$taxId);
@@ -97,6 +105,7 @@ class NikController extends AbstractController
          'threadId' => $threadId,
          'threadStatus' => $threadStatus,
          'taxId' => $taxId,
+         'timeout' => $this->timeout,
       ]);
    }
 
@@ -104,11 +113,8 @@ class NikController extends AbstractController
     #[Route(path: '/nik/success', name: 'amreu_nik_success')]
     public function success(Request $request): Response
     {
-        $nikUser = $request->getSession()->get("nikUser");
-        if (!$nikUser) {
-            return $this->redirectToRoute('amreu_nik_get_invitation');
-        }
-        return $this->json($nikUser);
+      $nikUser = $request->getSession()->get("nikUser");
+      return $this->json($nikUser);
     }
 
     #[Route(path: '/logout', name: 'amreu_nik_logout')]
