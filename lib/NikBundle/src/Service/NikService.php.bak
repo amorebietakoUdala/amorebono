@@ -1,0 +1,223 @@
+<?php
+
+declare(strict_types=1);
+
+namespace AMREU\NikBundle\Service;
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
+
+final class NikService
+{
+    private const PATHS = [
+        'invitation'  => '/v1/invitation',
+        'login'       => '/v1/login',
+        'threads'     => '/v1/threads',
+        'credentials' => '/v1/credentials',
+    ];
+
+    /**
+     * @param HttpClientInterface $httpClient  HttpClient konfiguragarria (gomendatua: base_uri gabe eta hemen eraiki)
+     * @param string              $apiKey      X-APP-APIKEY balioa
+     * @param string              $endPoint    Adib.: "https://api.nik.ejemplo.tld"
+     * @param float               $timeout     Segundotan; adib.: 10.0
+     * @param int                 $maxRetries  Saiakera kopurua; adib.: 1-3
+     */
+    public function __construct(
+        private readonly HttpClientInterface $httpClient,
+        private readonly string $apiKey,
+        private readonly string $endPoint,
+        private readonly float $timeout = 10.0,
+        private readonly int $maxRetries = 2,
+    ) {
+    }
+
+    /**
+     * NIK invitation sortu.
+     *
+     * @return array<string,mixed>|null
+     */
+    public function invitation(): ?array
+    {
+        return $this->requestJson('POST', self::PATHS['invitation']);
+    }
+
+    /**
+     * Invitation lortu ID bidez.
+     *
+     * @return array<string,mixed>|null
+     */
+    public function getInvitation(?string $inviId): ?array
+    {
+        if ($inviId === null || $inviId === '') {
+            return null;
+        }
+
+        return $this->requestJson('GET', sprintf('%s/%s', self::PATHS['invitation'], rawurlencode($inviId)));
+    }
+
+    /**
+     * Login ekintza.
+     *
+     * @return array<string,mixed>|null
+     */
+    public function login(
+        string $connUUID,
+        string $petID,
+        string $descriptionEs,
+        string $descriptionEu,
+        string $locale,
+        ?string $callback = null
+    ): ?array {
+        $payload = [
+            'connUUID' => $connUUID,
+            'desc'     => [
+                'es' => $descriptionEs,
+                'eu' => $descriptionEu,
+            ],
+            'petID'    => $petID,
+            // API-ak eskatzen badu, aktibatu:
+            // 'callback' => $callback,
+            // 'locale'   => $locale, // erabiltzekotan
+        ];
+
+        return $this->requestJson('POST', self::PATHS['login'], $payload);
+    }
+
+    /**
+     * Thread lortu ID bidez.
+     *
+     * @return array<string,mixed>|null
+     */
+    public function getThread(string $threadId): ?array
+    {
+        if ($threadId === '') {
+            return null;
+        }
+
+        return $this->requestJson('GET', sprintf('%s/%s', self::PATHS['threads'], rawurlencode($threadId)));
+    }
+
+    /**
+     * Credentials lortu ID bidez.
+     *
+     * @return array<string,mixed>|null
+     */
+    public function getCredentials(string $credentialId): ?array
+    {
+        if ($credentialId === '') {
+            return null;
+        }
+
+        return $this->requestJson('GET', sprintf('%s/%s', self::PATHS['credentials'], rawurlencode($credentialId)));
+    }
+
+    // -------------------------
+    // Helburu orokorreko helper-ak
+    // -------------------------
+
+    /**
+     * API deia egin eta JSON gisa bueltatu.
+     *
+     * @param array<string,mixed>|null $jsonBody
+     * @return array<string,mixed>|null
+     */
+    private function requestJson(string $method, string $path, ?array $jsonBody = null): ?array
+    {
+        $url = $this->buildUrl($path);
+
+        $options = [
+            'headers' => $this->defaultHeaders(),
+            'timeout' => $this->timeout,
+        ];
+
+        if ($jsonBody !== null) {
+            // Symfony HttpClient-en aukera nativa: 'json' -> JSON encode + Content-Type
+            $options['json'] = $jsonBody;
+        }
+
+        $response = $this->sendWithRetry($method, $url, $options);
+
+        $status = $response->getStatusCode();
+        if ($status >= 200 && $status < 300) {
+            // getContent(true) -> ez du exception botatzen non-2xx kasuan, baina dagoeneko filtratuta dago
+            $content = $response->getContent(false);
+            if ($content === '' || $content === null) {
+                return null;
+            }
+
+            /** @var array<string,mixed>|null $decoded */
+            $decoded = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+
+            return $decoded;
+        }
+
+        // Hemen bi aukera dituzu:
+        // 1) null bueltatu eta kanpoan kudeatu
+        // 2) salbuespena bota
+        // Hemen: null bueltatzen dugu modu bateragarrian.
+        return null;
+    }
+
+    /**
+     * Saiakeradun bidalketa (retry sinplea: network/5xx kasuetan).
+     *
+     * @param array<string,mixed> $options
+     */
+    private function sendWithRetry(string $method, string $url, array $options): ResponseInterface
+    {
+        $attempts = 0;
+        $lastException = null;
+
+        while ($attempts <= $this->maxRetries) {
+            try {
+                $response = $this->httpClient->request($method, $url, $options);
+
+                $status = $response->getStatusCode();
+                // 5xx edo gateway erroreak -> berriz saiatu
+                if ($status >= 500 && $status <= 599) {
+                    $attempts++;
+                    if ($attempts > $this->maxRetries) {
+                        return $response; // utzi azken erantzuna kanpoan kudeatzeko
+                    }
+                    // jitter txiki bat (blocking ez bada, ongi); hemen sinplea:
+                    usleep(100_000 * $attempts);
+                    continue;
+                }
+
+                return $response;
+            } catch (\Throwable $e) {
+                $lastException = $e;
+                $attempts++;
+                if ($attempts > $this->maxRetries) {
+                    throw $e;
+                }
+                usleep(100_000 * $attempts);
+            }
+        }
+
+        // Teorian ez dugu inoiz hona iritsi behar:
+        if ($lastException !== null) {
+            throw $lastException;
+        }
+
+        // Fallback:
+        return $this->httpClient->request($method, $url, $options);
+    }
+
+    private function defaultHeaders(): array
+    {
+        return [
+            'X-APP-APIKEY'  => $this->apiKey,
+            'Content-Type'  => 'application/json',
+            'Accept'        => 'application/json',
+        ];
+    }
+
+    private function buildUrl(string $path): string
+    {
+        // Ziurtatu endpoint-aren amaieran ez dagoela "/" bikoizketarik
+        return rtrim($this->endPoint, '/') . $path;
+    }
+}

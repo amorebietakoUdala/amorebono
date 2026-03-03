@@ -8,7 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "amorebietakoudala/giltza-bundle": "^0.1.0",
-        "amorebietakoudala/nik-bundle": "*",
+        "amorebietakoudala/nik-bundle": "*@dev",
         "amorebietakoudala/stimulus-controller-bundle": "^1.0",
         "doctrine/doctrine-bundle": "^2.18",
         "doctrine/doctrine-migrations-bundle": "^3.7",
@@ -45,7 +45,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "AMREU\\NIKBundle\\": "lib/NIKBundle/src/"
+            "AMREU\\NikBundle\\": "lib/NikBundle/src/"
         }
     },
     "autoload-dev": {

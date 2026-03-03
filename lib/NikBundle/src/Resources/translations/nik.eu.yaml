@@ -1,0 +1,3 @@
+message.scanQRorUseDeeplink: "QR kodea eskaneatu edo mugikorrarekin bazaude sakatu esteka."
+message.nikAceptationWait: "Mesedez, sartu zure NIK APP-ra eta onartu datuen lagapena."
+message.authenticationSuccess: "Behar bezala autentikatu da: %taxId%"

@@ -1,0 +1,14 @@
+{% trans_default_domain 'nik' %}
+
+{% if taxId != null %}
+   <div style="font-weight: bold; text-align: center;">{{ 'message.authenticationSuccess' | trans({'%taxId%' : taxId}) }}</div>
+{% else %}
+   <div style="font-weight: bold; text-align: center;">{{ 'message.nikAceptationWait' | trans }}</div>
+{% endif %}
+{% if ( threadId != null or ( threadId != null and threadStatus.status == 0 ) ) %}
+   <script type='text/javascript'>
+      setTimeout(() => {
+         window.location.href="{{ absolute_url(path('amreu_nik_get_thread', { 'threadId' : threadId })) }}"
+      }, 5000); // 5000 ms = 5 segundos
+   </script>
+{% endif %}

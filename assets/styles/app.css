@@ -16,7 +16,7 @@ main {
 }
 
 .logo {
-    height: 100px;
+    height: 140px;
     width: auto;
 }
 
@@ -66,11 +66,17 @@ a {
     height: 100%;
 }
 
+.nik-qr {
+    width: 500px; 
+    height: auto;
+}
+
 @media (max-width: 900px) {
     .logo {
-        height: 50px;
+        height: 100px;
         width: auto;
     }
+
     h1 {
         font-size: 1.2rem;
     }
@@ -107,6 +113,11 @@ a {
 }
 
 @media (max-width: 400px) {
+    .logo {
+        height: 50px;
+        width: auto;
+    }
+
     .bonus-list {
         width: 100%;
     }

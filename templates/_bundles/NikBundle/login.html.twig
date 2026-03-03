@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   {% if taxId != null %}
+      Your TaxId is {{ taxId }}
+   {% else %}
+      {{ 'message.nikAceptationWait' | trans }}
+   {% endif %}
+   {{ dump(threadStatus, threadId) }}
+   {% if ( threadId != null or ( threadId != null and threadStatus.status == 0 ) ) %}
+      <script type='text/javascript'>
+         setTimeout(() => {
+            window.location.href="{{ absolute_url(path('amreu_nik_get_thread', { 'threadId' : threadId })) }}"
+         }, 5000); // 5000 ms = 5 segundos
+      </script>
+   {% endif %}   
+{% endblock body %}

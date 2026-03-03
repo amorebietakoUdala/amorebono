@@ -1,0 +1,7 @@
+   {% if amorebonoUser is defined and amorebonoUser != null %}
+      {{ amorebonoUser.dni}}
+      {% if amorebonoUser.givenName != null and amorebonoUser.surname1 != null and amorebonoUser.surname2 != null %} 
+         <span id="izena">- {{ amorebonoUser.givenName }} {{ amorebonoUser.surname1 }} {{ amorebonoUser.surname2 }}</span>
+      {% endif %}
+      &nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="{{ path('app_logout') }}">{{ "link.logout" | trans | capitalize }}</a>
+   {% endif %}

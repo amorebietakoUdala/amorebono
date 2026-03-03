@@ -8,20 +8,21 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
 
-    AMREU\NIKBundle\:
+    AMREU\NikBundle\:
         resource: '../../*'
         exclude:
             - '../../Resources/'
             - '../../DependencyInjection/'
-            - '../../NIKBundle.php'
+            - '../../NikBundle.php'
 
-    # AMREU\GiltzaBundle\Controller\GiltzaController:
-    #     class: AMREU\GiltzaBundle\Controller\GiltzaController
-    #     tags: ['controller.service_arguments']
-    #     arguments: ['@AMREU\GiltzaBundle\Service\GiltzaProvider', '$options']
+    AMREU\NikBundle\Service\NikService:
+        class: AMREU\NikBundle\Service\NikService
+        arguments: ['@http_client', '@monolog.logger', '$apiKey', '$endPoint']
+        
+    AMREU\NikBundle\Controller\NikController:
+        class: AMREU\NikBundle\Controller\NikController
+        tags: ['controller.service_arguments']
+        arguments: ['@AMREU\NikBundle\Service\NikService', '$successUri']
             
 
-    # AMREU\GiltzaBundle\Service\GiltzaProvider:
-    #     class: AMREU\GiltzaBundle\Service\GiltzaProvider
-    #     arguments: ['@router', '$options']
             

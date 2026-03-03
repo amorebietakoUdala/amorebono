@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\Bono;
+use App\DTO\AmorebonoUser;
 use App\DTO\BonosDisponiblesResponse;
 use App\DTO\BuyBonosResponse;
 use App\DTO\ReimprimirBonosResponse;
@@ -29,21 +30,36 @@ final class CampaignController extends AbstractController
     {
     }
 
+    protected function getAmorebonoUser(Request $request): ?AmorebonoUser {
+        $giltzaUser = $request->getSession()->get("giltzaUser");
+        $nikUser = $request->getSession()->get("nikUser");
+        if ( !$giltzaUser && !$nikUser ) {
+            return null;
+        } elseif ( $giltzaUser !== null ) {
+            $user = new AmorebonoUser($giltzaUser['dni'], $giltzaUser['given_name'], $giltzaUser['surname1'], $giltzaUser['surname2']);
+        } elseif ( $nikUser !== null ) { 
+            $user = new AmorebonoUser($nikUser);
+        } else {
+            $user = null;
+        }
+        return $user;        
+    }
+
     #[Route('/{_locale}/', name: 'app_campaign_index', requirements: ['_locale' => 'es|eu'], defaults: ['_locale' => 'eu'], priority: 0)]
     public function index(Request $request): Response
     {
-        $request->getSession()->set("_locale", $request->getLocale());
-        $giltzaUser = $request->getSession()->get("giltzaUser");
-        if (!$giltzaUser) {
-            return $this->redirectToRoute('amreu_giltza_login');
+        if (null !== $this->getAmorebonoUser($request)) {
+            $this->redirectToRoute('app_auth_selector');
         }
+        $request->getSession()->set("_locale", $request->getLocale());
+        $user = $this->getAmorebonoUser($request);
         $campaign = $this->amorebonoService->info();
         $nombresBonos = $campaign->getNombresBonos($request->getLocale());
 
         if ( $campaign->getError() === AmorebonoService::ERROR_FETCHING_CAMPAIGN_1 || $campaign->getError() === AmorebonoService::ERROR_FETCHING_CAMPAIGN_2 ) {
             $this->addFlash('warning','message.noActiveCampaigns');
         }
-        $disponiblesArray = $this->amorebonoService->getBonosUsuarioDisponibles($giltzaUser['dni']);
+        $disponiblesArray = $this->amorebonoService->getBonosUsuarioDisponibles($user->getDni());
         $disponibles = BonosDisponiblesResponse::createFromArray($disponiblesArray);
         $hasBought = $campaign->hasBought($disponibles);
         $form = $this->createForm(BuyBonoType::class, null, [
@@ -59,7 +75,7 @@ final class CampaignController extends AbstractController
                     // 'disponibles' => $disponibles,
                     'nombresBonos' => $nombresBonos,
                     'disponibles' => $disponibles,
-                    'giltzaUser' => $giltzaUser,
+                    'amorebonoUser' => $user,
                     'campaign' => $campaign,
                     'hasBought' => $hasBought,
                     'form' => $form->createView(),  
@@ -78,14 +94,14 @@ final class CampaignController extends AbstractController
                 return $this->render('campaign/index.html.twig', [
                     'nombresBonos' => $nombresBonos,
                     'disponibles' => $disponibles,
-                    'giltzaUser' => $giltzaUser,
+                    'amorebonoUser' => $user,
                     'campaign' => $campaign,
                     'hasBought' => $hasBought,
                     'form' => $form->createView(),  
                 ]);
             }
 
-            $response = $this->amorebonoService->buy($giltzaUser['dni'], $data);
+            $response = $this->amorebonoService->buy($user->getDni(), $data);
             $boughtBonos = BuyBonosResponse::createFromArray($response);
             if ($boughtBonos->isOk()) {
                 /**
@@ -94,7 +110,7 @@ final class CampaignController extends AbstractController
                 $bonos = $boughtBonos->getBonos();
                 foreach ($bonos as $bono) {
                     $sale = new Sale();
-                    $sale->setDni($giltzaUser['dni']);
+                    $sale->setDni($user->getDni());
                     $sale->fillBono($bono);
                     $sale->setFecha(new \DateTime());
                     $this->em->persist($sale);
@@ -126,7 +142,7 @@ final class CampaignController extends AbstractController
         return $this->render('campaign/index.html.twig', [
             'nombresBonos' => $nombresBonos,
             'disponibles' => $disponibles,
-            'giltzaUser' => $giltzaUser,
+            'amorebonoUser' => $user,
             'campaign' => $campaign,
             'hasBought' => $hasBought,
             'form' => $form->createView(),  
@@ -135,13 +151,13 @@ final class CampaignController extends AbstractController
 
     #[Route('/{_locale}/reprint-bonos', name: 'app_campaign_reprint_bonos', requirements: ['_locale' => 'es|eu'], defaults: ['_locale' => 'eu'], priority: 0)]
     public function reprintBonos(Request $request): Response {
-        $request->getSession()->set("_locale", $request->getLocale());
-        $giltzaUser = $request->getSession()->get("giltzaUser");
-        if (!$giltzaUser) {
-            return $this->redirectToRoute('amreu_giltza_login');
+        if (null !== $this->getAmorebonoUser($request)) {
+            $this->redirectToRoute('app_auth_selector');
         }
+        $request->getSession()->set("_locale", $request->getLocale());
+        $user = $this->getAmorebonoUser($request);
         $byMail = boolval($request->query->get('byMail',false));
-        $disponiblesArray = $this->amorebonoService->getBonosUsuarioDisponibles($giltzaUser['dni']);
+        $disponiblesArray = $this->amorebonoService->getBonosUsuarioDisponibles($user->getDni());
         $disponibles = BonosDisponiblesResponse::createFromArray($disponiblesArray);
         $form = $this->createForm(BuyBonoType::class, null, [
             'restantes_tipo1' => $disponibles->getRestantesTipo1(),
@@ -150,7 +166,7 @@ final class CampaignController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $myBonosResponse = $this->amorebonoService->reprintBonos($giltzaUser['dni']);
+            $myBonosResponse = $this->amorebonoService->reprintBonos($user->getDni());
             $myBonos = ReimprimirBonosResponse::createFromArray($myBonosResponse);
             if ( $byMail && ( $data['email'] === null || empty($data['email']) ) ) {
                 $this->addFlash('error','message.emailNeeded');
@@ -186,7 +202,7 @@ final class CampaignController extends AbstractController
         return $this->render('campaign/index.html.twig', [
             'nombresBonos' => $nombresBonos,
             'disponibles' => $disponibles,
-            'giltzaUser' => $giltzaUser,
+            'amorebonoUser' => $user,
             'campaign' => $campaign,
             'hasBought' => $hasBought,
             'form' => $form->createView(),  

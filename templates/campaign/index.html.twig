@@ -8,9 +8,7 @@
          <i class="fa fa-bars" aria-hidden="true"></i>
       </button>
       <div id="span-erabiltzailea" class="col-sm-auto d-block d-lg-none">
-         {% if giltzaUser is defined and giltzaUser != null %}
-            {{ giltzaUser.dni}} <span id="izena">- {{ giltzaUser.given_name }} {{ giltzaUser.surname1 }} {{ giltzaUser.surname2 }}</span>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="{{ path('app_logout') }}">{{ "link.logout" | trans | capitalize }}</a>
-         {% endif %}
+         {% include ("common/_loggedUser.html.twig") %}
       </div>
    </div>
    <div class="collapse col-md-12 col-sm-12 me-1 position-fixed start-0 w-100 bg-light p-3 shadow" id="myStatusCard" style="z-index: 1050;">

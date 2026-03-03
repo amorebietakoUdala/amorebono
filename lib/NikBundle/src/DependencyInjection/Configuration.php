@@ -1,6 +1,6 @@
 <?php
 
-namespace AMREU\NIKBundle\DependencyInjection;
+namespace AMREU\NikBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -17,18 +17,12 @@ class Configuration implements ConfigurationInterface
         $treebuilder = new TreeBuilder('nik');
         $rootNode = $treebuilder->getRootNode();
 
-        // $rootNode
-        //     ->children()
-        //         ->arrayNode('provider')
-        //             ->children()
-        //                 ->scalarNode('clientId')->info('Giltza client ID')->isRequired()->end()
-        //                 ->scalarNode('clientSecret')->info('Giltza client secret')->isRequired()->end()
-        //                 ->scalarNode('redirectUri')->defaultValue('amreu_giltza_login')->info('URL that redirects to giltza authentication')->end()
-        //                 ->scalarNode('urlAuthorize')->defaultValue('https://eidas.izenpe.com/trustedx-authserver/oauth/izenpe')->info('Giltza authorization URL')->end()
-        //                 ->scalarNode('urlAccessToken')->defaultValue('https://eidas.izenpe.com/trustedx-authserver/oauth/izenpe/token')->info('Giltza access token URL')->end()
-        //                 ->scalarNode('urlResourceOwnerDetails')->defaultValue('https://eidas.izenpe.com/trustedx-resources/openid/v1/users/me')->info('Giltza resource owner details URL')->end()
-        //             ->end()
-        //         ->end()
+        $rootNode
+            ->children()
+                ->scalarNode('apiKey')->info('Nik Api Key')->isRequired()->end()
+                ->scalarNode('successUri')->info('path to redirect after a successfull login')->isRequired()->end()
+                ->scalarNode('endPoint')->defaultValue('http://svc.integracion.ejgv.jaso/ctxweb/ad56pbmiddleware')->end()
+            ->end();
         //         ->arrayNode('controller')
         //             ->children()
         //                 ->scalarNode('successUri')->isRequired()->info('URL to go to after successful giltza login. For example: ("amreu_giltza_success")')->end()

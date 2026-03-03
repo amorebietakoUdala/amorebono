@@ -1,6 +1,6 @@
 <?php
 
-namespace AMREU\NIKBundle;
+namespace AMREU\NikBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

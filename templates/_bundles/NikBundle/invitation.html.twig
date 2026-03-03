@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   <div class="d-flex justify-content-center align-items-center h-100 w-100">
+      <img src="{{ invitationRequest.qr }}" class="nik-qr">
+   </div>
+   <div class="d-flex justify-content-center align-items-center h-100 w-100">
+      <a href="{{ invitationRequest.deeplink }}">{{ invitationRequest.invUUID }}</a>
+   </div>
+   <div class="d-flex justify-content-center align-items-center h-100 w-100">
+      {{ 'message.scanQRorUseDeeplink' | trans({},'nik') }}
+   </div>
+   {% if ( ( invitation == null or ( invitation != null and invitation.status == 0 ) ) and invitationRequest.invUUID != null ) %}
+      <script type='text/javascript'>
+         setTimeout(() => {
+            window.location.href="{{ absolute_url(path('amreu_nik_get_invitation', { 'inviId' : invitationRequest.invUUID })) }}"
+         }, 5000); // 5000 ms = 5 segundos
+      </script>
+   {% endif %}   
+{% endblock body %}

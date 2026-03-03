@@ -1,0 +1,5 @@
+nik:
+   apiKey: '%env(NIK_API_KEY)%'
+   successUri: '%env(NIK_SUCCESS_URI)%'
+   # Only needed when it's different from prod environment throw jaso network
+   endPoint: 'http://svc.integracion.pru.ejgv.jaso/ctxweb/ad56pbmiddleware'
