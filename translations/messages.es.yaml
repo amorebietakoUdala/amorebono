@@ -30,7 +30,8 @@ message.bonosAdquiredSuccessfully: "Los bonos se han obtenido correctamente"
 message.bonoDuration: "* Los bonos tienen una vigencia de %duration% días"
 message.youAcquiredAllYourBonos: "Ya ha adquirido todos los bonos que le corresponden"
 message.emailNeeded: "Debe introducir un email para poder reenviarle los bonos"
-# message.nikAceptationWait: "Esperando aceptación. Por favor, vaya a su NIK APP y acepte la cesión de datos"
+message.successfullySent: "Los amorebonos se han enviado al email correctamente."
+message.youUsedAllYourBonos: "Ha utilizado todos los amorebonos adquiridos."
 
 message.problemCallingNikApp: "Ha habido un problema al llamar a NIK APP. Pruebe más tarde."
 

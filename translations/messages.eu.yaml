@@ -29,7 +29,8 @@ message.bonosAdquiredSuccessfully: "Bonoak behar bezala eskuratu dira"
 message.bonoDuration: "* Bonuek %duration% eguneko iraunpena dute"
 message.youAcquiredAllYourBonos: "Dagozkizun bono guztiak eskuratu dituzu jadanik"
 message.emailNeeded: "Email bat sartu behar duzu bonoak berbidaltzeko"
-#message.nikAceptationWait: "Onarpenaren zain... Mesedez, NIK APP-ra joan eta onartu datuen lagapena"
+message.successfullySent: "Amorebonoak behar bezala bidali dira emailez."
+message.youUsedAllYourBonos: "Eskuratutako amorebono guztiak erabili dituzu."
 
 message.problemCallingNikApp: "NIK APP-ra deitzean akats bat gertatu da. Saiatu geroago."
 

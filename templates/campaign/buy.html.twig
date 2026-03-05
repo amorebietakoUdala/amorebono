@@ -69,9 +69,11 @@
                      <div class="col-lg-2 col-md-4 mb-1">
                         {{ form_row(form.email, { 'attr': { 'class' : 'form-control' } }) }}
                      </div>
-                     <div class="col-lg-1 col-md-2 mb-1">
-                        <a href="#" data-url="{{ path('app_campaign_buy') }}" data-action="action-changer#onClick" class="btn btn-lg btn-primary form-control" {{ stimulus_controller('action-changer') }}>{{"btn.buy" | trans | capitalize}}</a>
-                     </div>
+                     {% if canBuy %}
+                        <div class="col-lg-1 col-md-2 mb-1">
+                           <a href="#" data-url="{{ path('app_campaign_buy') }}" data-action="action-changer#onClick" class="btn btn-lg btn-primary form-control" {{ stimulus_controller('action-changer') }}>{{"btn.buy" | trans | capitalize}}</a>
+                        </div>
+                     {% endif %}
                      {% if hasBought %}
                         <div class="col-lg-1 col-md-3 mb-1">
                            <a href="#" data-url="{{ path('app_campaign_reprint_bonos', { 'byMail' : true }) }}" data-action="action-changer#onClick" class="btn btn-lg btn-success form-control" {{ stimulus_controller('action-changer') }}>{{"btn.resend" | trans | capitalize}}</a>
@@ -83,6 +85,7 @@
                            <a href="{{ path('app_campaign_my_bonos') }}" class="btn btn-lg btn-success form-control">{{ "btn.show" | trans | capitalize }}</a>
                         </div>
                      {% endif %}
+                     {{dump(disponibles)}}
                   </div>
                </div>
             {{ form_end(form) }}
