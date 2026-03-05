@@ -3,90 +3,27 @@
 {% block title %}{{'title.campaignIndex' | trans }}{% endblock %}
 
 {% block body %}
-   <div class="container-fluid d-flex flex-row justify-content-between p-1">
-      <button id="my-status-toggle" class="col-sm-auto btn btn-primary d-block d-lg-none me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#myStatusCard" aria-expanded="false" aria-controls="myStatusCard">
-         <i class="fa fa-bars" aria-hidden="true"></i>
-      </button>
-      <div id="span-erabiltzailea" class="col-sm-auto d-block d-lg-none">
-         {% include ("common/_loggedUser.html.twig") %}
+   {% if not NikInternalLogin %}
+      <div class="container-fluid d-flex flex-row justify-content-between p-1">
+         <div id="span-erabiltzailea" class="ml-auto col-sm-auto d-block d-lg-none">
+            {% include ("common/_loggedUser.html.twig") %}
+         </div>
       </div>
-   </div>
-   <div class="collapse col-md-12 col-sm-12 me-1 position-fixed start-0 w-100 bg-light p-3 shadow" id="myStatusCard" style="z-index: 1050;">
-      {% include "campaign/_myStatus.html.twig" %}
-   </div>
-   <div id="content" class="mx-1">
-      <div class="card">
-         {# <h3>{{'title.campaignIndex' | trans }}</h3> #}
-         <h3 id="campaignTitle" class="card-title col-lg-12 text-center border-bottom bg-secondary-subtle p-1">
-            {# {{ app.locale == 'es' ? campaign.nombreEs : campaign.nombreEu }} #}( {{ campaign.fechaIni | date ('Y-m-d')}} / {{ campaign.fechaFin | date ('Y-m-d')}} ) 
-         </h3>
-         {% if campaign is defined and campaign is not null %}
-            {{ form_start(form, {
-               'attr': {
-                  'novalidate': 'novalidate'
-               }
-               })
-            }}
-               {{ form_errors(form) }}      
-               <div class="d-flex justify-content-start px-2 mt-2">
-                  <div id="my-status-card" class="col-lg-auto col-md-4 me-1 d-none d-lg-block h-auto">
-                     {% include "campaign/_myStatus.html.twig" %}
-                  </div>
-                  <div class="col-lg-auto col-md-12 d-flex justify-content-center align-items-center flex-wrap">
-                     {% if disponibles.restantesTipo1 > 0 or disponibles.restantesTipo2 > 0 %}
-                        {% for item in campaign.bonos %}
-                              {% if ( item.stockTotal > item.consumidos and ( ( disponibles.restantesTipo1 > 0 and item.tipoBono == "1" ) or ( disponibles.restantesTipo2 > 0 and item.tipoBono == "2" ) ) ) %}
-                                 <div class="mx-1 mb-3 col-lg-auto bonus-list">
-                                    <div class="card card-body d-flex flex-column justify-content-center bonus">
-                                       <h4 class="card-title text-center">{{ app.locale == 'es' ? item.nombreEs : item.nombreEu }}</h4>
-                                       {% set imagePath = 'build/images/amorebono_tipo'~item.tipoBono~'.png' %}
-                                       <div class="row d-flex justify-content-center mb-1"><img class="logo" alt="{{ 'amorebono_tipo'~item.tipoBono }}" src="{{ asset(imagePath) }}"></div>
-                                       <div class="d-flex justify-content-center">
-                                          {% if item.tipoBono == "1" %}
-                                             <div class="col-lg-auto col-md-4 col-sm-12 d-flex justify-content-center align-items-center" {{ stimulus_controller('up-down-button') }}>
-                                                <i class="fa fa-minus btn btn-primary btn-lg" aria-hidden="true" data-action="click->up-down-button#down"></i>&nbsp;
-                                                <div class="col-lg-6 col-md-12">{{ form_widget(form.cantidad_bonos1, { 'attr' : { 'data-up-down-button-target': 'input', class: "form-control-lg text-center" }}) }}</div>&nbsp;
-                                                <i class="fa fa-plus btn btn-primary btn-lg" aria-hidden="true" data-action="click->up-down-button#up"></i>
-                                                {{ form_errors(form.cantidad_bonos1) }}
-                                             </div>
-                                          {% else %}
-                                             <div class="col-lg-auto col-md-4 col-sm-12 d-flex justify-content-center align-items-center" {{ stimulus_controller('up-down-button') }}>
-                                                <i class="fa fa-minus btn btn-primary btn-lg" aria-hidden="true" data-action="click->up-down-button#down"></i>&nbsp;
-                                                <div class="col-lg-6 col-md-12">{{ form_widget(form.cantidad_bonos2, { 'attr' : { 'data-up-down-button-target': 'input', class: "form-control-lg text-center" }}) }}</div>&nbsp;
-                                                <i class="fa fa-plus btn btn-primary btn-lg" aria-hidden="true" data-action="click->up-down-button#up"></i>
-                                                {{ form_errors(form.cantidad_bonos2) }}
-                                             </div>
-                                          {% endif %}
-                                       </div>
-                                    </div>
-                                 </div>
-                              {% endif %}
-                        {% endfor %}
-                     {% else %}
-                        <div class="alert alert-warning">{{ 'message.youAquiredAllYourBonos' | trans }}</div>
-                     {% endif %}
-                  </div>
+   {% endif %}
+   <div class="container-fluid" style="margin-top: 200px">
+      <div id="content" class="col-lg-12 d-flex justify-content-center align-items-center">
+         <div class="col-lg-auto d-flex flex-column gap-2">
+            {% if canBuy %}   
+               <div class="col-lg-12 col-md-2 mb-1">
+                  <a href="{{ path('app_campaign_buy') }}" class="btn btn-primary btn-lg form-control">{{"btn.buy" | trans | capitalize}}</a>
                </div>
-               <div class="container-fluid px-2 mt-2">
-                  <div class="row d-flex justify-content-start align-items-center col-lg-12">
-                     <div class="col-lg-2 col-md-4 mb-1">
-                        {{ form_row(form.email, { 'attr': { 'class' : 'form-control' } }) }}
-                     </div>
-                     <div class="col-lg-1 col-md-2 mb-1">
-                        <a href="#" data-url="{{ path('app_campaign_index') }}" data-action="action-changer#onClick" class="btn btn-primary form-control" {{ stimulus_controller('action-changer') }}>{{"btn.buy" | trans | capitalize}}</a>
-                     </div>
-                     {% if hasBought %}
-                        <div class="col-lg-1 col-md-2 mb-1">
-                           <a href="#" data-url="{{ path('app_campaign_reprint_bonos', { 'byMail' : true }) }}" data-action="action-changer#onClick" class="btn btn-success form-control" {{ stimulus_controller('action-changer') }}>{{"btn.resend" | trans | capitalize}}</a>
-                        </div>
-                        <div class="col-lg-1 col-md-2 mb-1">
-                           <a href="#" data-url="{{ path('app_campaign_reprint_bonos') }}" class="btn btn-success form-control" data-action="action-changer#onClick" {{ stimulus_controller('action-changer') }}>{{"btn.download" | trans | capitalize}}</a>
-                        </div>
-                     {% endif %}
-                  </div>
+            {% endif %}
+            {% if hasBought %}
+               <div class="col-lg-12 col-md-2 mb-1">
+                  <a href="{{ path('app_campaign_my_bonos') }}" class="btn btn-success btn-lg form-control">{{ "btn.show" | trans | capitalize }}</a>
                </div>
-            {{ form_end(form) }}
-         {% endif %}
+            {% endif %}
+         </div>
       </div>
    </div>
 {% endblock %}

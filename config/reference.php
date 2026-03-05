@@ -711,7 +711,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  * @psalm-type NikConfig = array{
  *     apiKey: scalar|Param|null, // Nik Api Key
  *     successUri: scalar|Param|null, // path to redirect after a successfull login
- *     endPoint?: scalar|Param|null, // Default: "http://svc.integracion.pru.ejgv.jaso/ctxweb/ad56pbmiddleware"
+ *     endPoint?: scalar|Param|null, // Default: "http://svc.integracion.ejgv.jaso/ctxweb/ad56pbmiddleware"
+ *     timeout?: scalar|Param|null, // Default: "5000"
  * }
  * @psalm-type MakerConfig = array{
  *     root_namespace?: scalar|Param|null, // Default: "App"

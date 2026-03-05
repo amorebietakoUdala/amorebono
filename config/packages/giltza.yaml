@@ -8,7 +8,7 @@ giltza:
       # redirectUri: 'amreu_giltza_login' # This should be the route name or ABSOLUTE URL to the route that handles the callback from Giltza. It must match the redirect URI registered in Giltza.
 
     controller:
-        successUri: 'app_campaign_index'
+        successUri: 'app_campaign_buy'
         # response_type: 'code'
         # scope: 'urn:izenpe:identity:global'
         # prompt: 'login'

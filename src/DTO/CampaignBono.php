@@ -13,8 +13,8 @@ final class CampaignBono {
       private string $nombreEs,
       private string $nombreEu,
       private string $paga,
-      string $maxPorPersona = "0",
       private string $gasta,
+      string $maxPorPersona = "0",
       string $stockTotal = "0",
       string $consumidos = "0",
    ) 
@@ -128,8 +128,8 @@ final class CampaignBono {
          $data['nombre_es'] ?? '',
          $data['nombre_eu'] ?? '',
          $data['paga'] ?? '',
-         $data['max_por_persona'] ?? '',
          $data['gasta'] ?? '',
+         $data['max_por_persona'] ?? '',
          $data['stock_total'] ?? '',
          $data['consumidos'] ?? ''
       );

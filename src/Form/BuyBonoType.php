@@ -17,6 +17,14 @@ class BuyBonoType extends AbstractType
         $restantesTipo1 = $options['restantes_tipo1'];
         $restantesTipo2 = $options['restantes_tipo2'];
             $builder
+                ->add('email', EmailType::class, [
+                    'label' => 'label.email',
+                    'required' => true,
+                    'constraints' => [
+                        new Assert\NotBlank(),
+                        new Assert\Email(),
+                    ]
+                ])
                 ->add('cantidad_bonos1', $restantesTipo1 > 0 ? IntegerType::class : HiddenType::class, [
                     'label' => 'Cantidad',
                     'attr' => [
@@ -40,13 +48,6 @@ class BuyBonoType extends AbstractType
                     ],
                     'empty_data' => 0,
                     'data' => 0,
-                ])
-                ->add('email', EmailType::class, [
-                    'label' => 'label.email',
-                    'required' => false,
-                    'constraints' => [
-                        new Assert\Email(),
-                    ]
                 ]);
     }
 

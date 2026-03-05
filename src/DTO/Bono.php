@@ -9,6 +9,7 @@ final class Bono {
    private int $paga;
    private int $gasta;
    private string $tipoBono;
+   private string $nombreBono;
    private ?\DateTime $fechaCaducidad = null;
 
    public function __construct(
@@ -17,20 +18,27 @@ final class Bono {
       string $paga,
       string $gasta,
       string $tipoBono,
+      string $nombreBono,
       string $fechaCaducidad,
    ) 
    {
       $this->qr = $qr;
       $this->codigo = $codigo;
-      $this->tipoBono = $tipoBono;
       $this->paga =  $paga != null ? intval($paga) : 0;
       $this->gasta =  $gasta != null ? intval($gasta) : 0;
+      $this->tipoBono = $tipoBono;
+      $this->nombreBono = $nombreBono;
       if ($fechaCaducidad !== null ) {
          $dateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $fechaCaducidad);
          if ($dateTime !== false) {
             $this->fechaCaducidad = $dateTime;  
          }
       }
+   }
+
+   public function getQrSrc()
+   {
+      return 'data:image/png;base64,'.$this->qr;
    }
 
    public function getQr()
@@ -65,6 +73,18 @@ final class Bono {
    public function setTipoBono(string $tipoBono): self
    {
       $this->tipoBono = $tipoBono;
+
+      return $this;
+   }
+
+   public function getNombreBono()
+   {
+      return $this->nombreBono;
+   }
+
+   public function setNombreBono($nombreBono)
+   {
+      $this->nombreBono = $nombreBono;
 
       return $this;
    }
@@ -113,21 +133,23 @@ final class Bono {
          $data['paga'] ?? '',
          $data['gasta'] ?? '',
          $data['tipo'] ?? '',
+         $data['nombre_bono'] ?? '',
          $data['caducidad'] ?? '',
+
       );
    }
 
    public function __toString()
    {
       return sprintf(
-         "Campaign(qr=%d, codigo=%s, tipo=%s, paga=%s, gasta=%s, fechaCaducidad=%s)",
+         "Bono(qr=%d, codigo=%s, tipo=%s, paga=%s, gasta=%s, nombreBono=%s, fechaCaducidad=%s)",
          $this->qr,
          $this->codigo,
          $this->tipoBono,
          $this->paga,
          $this->gasta,
+         $this->nombreBono,
          $this->fechaCaducidad,
       );
    }
-
 }

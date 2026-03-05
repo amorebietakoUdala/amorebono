@@ -79,4 +79,11 @@ final class BonosDisponiblesResponse {
          'restantes_tipo2' => $this->restantesTipo2,
       ];
    }
+
+   public function canBuy(): bool {
+      if ($this->restantesTipo1 === 0 and $this->restantesTipo2 === 0) {
+         return false;
+      }
+      return true;
+   }
 }

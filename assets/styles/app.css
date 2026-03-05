@@ -15,6 +15,11 @@ main {
     width: 100vw;
 }
 
+.bonoImage {
+    height: 140px;
+    width: auto;
+}
+
 .logo {
     height: 140px;
     width: auto;
@@ -33,13 +38,19 @@ tbody {
     line-height: 1rem;
 }
 
-.fixed-width-300px {
-    width: 300px;
+.fixed-width-200px {
+    width: 200px;
 }
 
-.fixed-height-250px {
-    min-height: 250px;
-    height: 250px;
+.fixed-height-100px
+{
+    min-height: 100px;
+    height: 100px;
+}
+
+.fixed-height-150px {
+    min-height: 150px;
+    height: 150px;
 }
 
 .card-rounded {
@@ -71,14 +82,38 @@ a {
     height: auto;
 }
 
+.required::before {
+    content: "* " !important;
+    color: red !important;
+}
+
 @media (max-width: 900px) {
     .logo {
         height: 100px;
         width: auto;
     }
 
-    h1 {
-        font-size: 1.2rem;
+    .logo-beltza {
+        height: 80px;
+        width: auto;
+    }
+
+    .bonoImage {
+        height: 100px;
+        width: auto;
+    }
+
+    .qr {
+        height: 100px;
+        width: auto;
+    }
+
+    .h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .h4 {
+        font-size: 1.0rem !important;
     }
 
     #my-status-toggle {
@@ -91,15 +126,6 @@ a {
 
     #campaignTitle {
         font-size: 0.8rem;
-    }
-
-    .fixed-width-300px {
-        width: 150px;
-    }
-
-    .fixed-height-250px {
-        min-height: 150px;
-        height: 150px;
     }
 
     .bonus {
@@ -115,6 +141,16 @@ a {
 @media (max-width: 400px) {
     .logo {
         height: 50px;
+        width: auto;
+    }
+
+    .bonoImage {
+        height: 50px;
+        width: auto;
+    }
+
+    .qr {
+        height: 100px;
         width: auto;
     }
 

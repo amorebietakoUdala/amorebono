@@ -8,14 +8,29 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "amorebietakoudala/giltza-bundle": "^0.1.0",
+        "amorebietakoudala/nik-bundle": "^0.1.0",
+        "amorebietakoudala/stimulus-controller-bundle": "^1.0",
+        "doctrine/doctrine-bundle": "^2.18",
+        "doctrine/doctrine-migrations-bundle": "^3.7",
+        "doctrine/orm": "^3.6",
         "league/oauth2-client": "^2.9",
         "symfony/apache-pack": "*",
         "symfony/console": "7.4.*",
         "symfony/dotenv": "7.4.*",
         "symfony/flex": "^2",
+        "symfony/form": "7.4.*",
         "symfony/framework-bundle": "7.4.*",
         "symfony/http-client": "7.4.*",
+        "symfony/mailer": "7.4.*",
+        "symfony/messenger": "7.4.*",
+        "symfony/monolog-bundle": "^4.0",
         "symfony/runtime": "7.4.*",
+        "symfony/security-csrf": "7.4.*",
+        "symfony/stimulus-bundle": "^2.32",
+        "symfony/translation": "7.4.*",
+        "symfony/twig-bundle": "7.4.*",
+        "symfony/validator": "7.4.*",
+        "symfony/webpack-encore-bundle": "^2.4",
         "symfony/yaml": "7.4.*"
     },
     "config": {
@@ -72,9 +87,16 @@
         {
             "type": "path",
             "url": "../../bundles/giltza-bundle"
+        },
+        {
+            "type": "path",
+            "url": "../../bundles/nik-bundle"
         }
     ],
     "require-dev": {
-        "symfony/maker-bundle": "^1.66"
+        "symfony/debug-bundle": "7.4.*",
+        "symfony/maker-bundle": "^1.66",
+        "symfony/stopwatch": "7.4.*",
+        "symfony/web-profiler-bundle": "7.4.*"
     }
 }

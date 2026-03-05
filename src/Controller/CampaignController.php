@@ -53,6 +53,30 @@ final class CampaignController extends AbstractController
         }
         $request->getSession()->set("_locale", $request->getLocale());
         $user = $this->getAmorebonoUser($request);
+        $NikInternalLogin = $request->getSession()->get("NikInternalLogin", false);
+        if (!$NikInternalLogin) {
+            return $this->redirectToRoute('app_campaign_buy');
+        }
+        $campaign = $this->amorebonoService->info();
+        $disponiblesArray = $this->amorebonoService->getBonosUsuarioDisponibles($user->getDni());
+        $disponibles = BonosDisponiblesResponse::createFromArray($disponiblesArray);
+        $hasBought = $campaign->hasBought($disponibles);
+        return $this->render('campaign/index.html.twig', [
+            'canBuy' => $disponibles->canBuy(),
+            'hasBought' => $hasBought,
+            'NikInternalLogin' => $NikInternalLogin,
+        ]);
+    }
+
+    #[Route('/{_locale}/buy', name: 'app_campaign_buy', requirements: ['_locale' => 'es|eu'], defaults: ['_locale' => 'eu'], priority: 0)]
+    public function buy(Request $request): Response
+    {
+        if (null === $this->getAmorebonoUser($request)) {
+            return $this->redirectToRoute('app_auth_selector');
+        }
+        $request->getSession()->set("_locale", $request->getLocale());
+        $user = $this->getAmorebonoUser($request);
+        $NikInternalLogin = $request->getSession()->get("NikInternalLogin", false);
         $campaign = $this->amorebonoService->info();
         $nombresBonos = $campaign->getNombresBonos($request->getLocale());
 
@@ -71,13 +95,14 @@ final class CampaignController extends AbstractController
             $data = $form->getData();
             if ( $data['cantidad_bonos1'] === 0 && $data['cantidad_bonos2'] === 0 ) {
                 $this->addFlash('error','message.noBonosSelected');
-                return $this->render('campaign/index.html.twig', [
+                return $this->render('campaign/buy.html.twig', [
                     // 'disponibles' => $disponibles,
                     'nombresBonos' => $nombresBonos,
                     'disponibles' => $disponibles,
                     'amorebonoUser' => $user,
                     'campaign' => $campaign,
                     'hasBought' => $hasBought,
+                    'NikInternalLogin' => $NikInternalLogin,
                     'form' => $form->createView(),  
                 ]);
             }
@@ -91,12 +116,13 @@ final class CampaignController extends AbstractController
                     '%solicitadosTipo1%' => $data['cantidad_bonos1'],
                     '%solicitadosTipo2%' => $data['cantidad_bonos2'],
                 ]));
-                return $this->render('campaign/index.html.twig', [
+                return $this->render('campaign/buy.html.twig', [
                     'nombresBonos' => $nombresBonos,
                     'disponibles' => $disponibles,
                     'amorebonoUser' => $user,
                     'campaign' => $campaign,
                     'hasBought' => $hasBought,
+                    'NikInternalLogin' => $NikInternalLogin,
                     'form' => $form->createView(),  
                 ]);
             }
@@ -119,10 +145,10 @@ final class CampaignController extends AbstractController
                 $this->addFlash('success', 'message.bonosAdquiredSuccessfully');
                 if ($data['email'] !== null) {
                     $pdf = $boughtBonos->getBinaryPdf();
-                    $this->sendTemplatedEmail('[Amorebono] Zure Bonuak | Sus Bonos', [$data['email']], 'campaign/buyEmail.html.twig', [
+                    $this->sendTemplatedEmail('[Amorebono] Zure Amorebonuak | Sus Amorebonos', [$data['email']], 'campaign/buyEmail.html.twig', [
                         'bonos' => $boughtBonos,
                     ],[
-                        'bonos.pdf' => $pdf
+                        'amorebonoak.pdf' => $pdf
                     ]);
                 } else {
                     $pdf = $boughtBonos->getBinaryPdf();
@@ -137,14 +163,15 @@ final class CampaignController extends AbstractController
             } else {
                 $this->addErrorMessage($boughtBonos, $campaign->getNombresBonos());
             }
-            return $this->redirectToRoute('app_campaign_index');
+            return $this->redirectToRoute('app_campaign_buy');
         }
-        return $this->render('campaign/index.html.twig', [
+        return $this->render('campaign/buy.html.twig', [
             'nombresBonos' => $nombresBonos,
             'disponibles' => $disponibles,
             'amorebonoUser' => $user,
             'campaign' => $campaign,
             'hasBought' => $hasBought,
+            'NikInternalLogin' => $NikInternalLogin,
             'form' => $form->createView(),  
         ]);
     }
@@ -156,6 +183,7 @@ final class CampaignController extends AbstractController
         }
         $request->getSession()->set("_locale", $request->getLocale());
         $user = $this->getAmorebonoUser($request);
+        $NikInternalLogin = $request->getSession()->get("NikInternalLogin", false);
         $byMail = boolval($request->query->get('byMail',false));
         $disponiblesArray = $this->amorebonoService->getBonosUsuarioDisponibles($user->getDni());
         $disponibles = BonosDisponiblesResponse::createFromArray($disponiblesArray);
@@ -170,43 +198,69 @@ final class CampaignController extends AbstractController
             $myBonos = ReimprimirBonosResponse::createFromArray($myBonosResponse);
             if ( $byMail && ( $data['email'] === null || empty($data['email']) ) ) {
                 $this->addFlash('error','message.emailNeeded');
-                return $this->redirectToRoute('app_campaign_index');
+                return $this->redirectToRoute('app_campaign_buy');
             }
             if ( $myBonos->isOk() ) {
                 $pdf = $myBonos->getBinaryPdf();
                 if ( !$byMail ) {
                     return new Response($pdf, Response::HTTP_OK, [
                         'Content-Type'        => 'application/pdf',
-                        'Content-Disposition' => 'attachment; filename="amorebonoak.pdf"',
+                        'Content-Disposition' => 'inline; filename="amorebonoak.pdf"',
+                        'Content-Transfer-Encoding' => 'binary',
+                        'Accept-Ranges'             => 'bytes',
                         'Content-Length'      => strlen($pdf),
                         'Cache-Control'       => 'no-store, no-cache, must-revalidate',
                         'Pragma'              => 'no-cache',
                     ]);
                 } else {
-                    $this->sendTemplatedEmail('[Amorebono] Sus Bonos | Zure Bonuak', [$data['email']], 'campaign/buyEmail.html.twig', [
+                    $this->sendTemplatedEmail('[Amorebono] Zure Amorebonuak | Sus Amorebonos', [$data['email']], 'campaign/buyEmail.html.twig', [
                         'bonos' => $myBonos,
                     ],[
                         'amorebonoak.pdf' => $pdf
                     ]);
-                    return $this->redirectToRoute('app_campaign_index');
+                    return $this->redirectToRoute('app_campaign_buy');
                 }
             } else {
                 $campaign = $this->amorebonoService->info();
                 $this->addErrorMessage($myBonos, $campaign->getNombresBonos());
-                return $this->redirectToRoute('app_campaign_index');
+                return $this->redirectToRoute('app_campaign_buy');
             }
         }
         $campaign = $this->amorebonoService->info();
         $nombresBonos = $campaign->getNombresBonos($request->getLocale());
         $hasBought = $campaign->hasBought($disponibles);        
-        return $this->render('campaign/index.html.twig', [
+        return $this->render('campaign/buy.html.twig', [
             'nombresBonos' => $nombresBonos,
             'disponibles' => $disponibles,
             'amorebonoUser' => $user,
             'campaign' => $campaign,
             'hasBought' => $hasBought,
+            'NikInternalLogin' => $NikInternalLogin,
             'form' => $form->createView(),  
         ]);
+    }
+
+    #[Route('/{_locale}/my-amorebonos', name: 'app_campaign_my_bonos', requirements: ['_locale' => 'es|eu'], defaults: ['_locale' => 'eu'], priority: 0)]
+    public function myBonos(Request $request) {
+        if (null !== $this->getAmorebonoUser($request)) {
+            $this->redirectToRoute('app_auth_selector');
+        }
+        $request->getSession()->set("_locale", $request->getLocale());
+        $user = $this->getAmorebonoUser($request);
+        $NikInternalLogin = $request->getSession()->get("NikInternalLogin", false);
+        $myBonosResponse = $this->amorebonoService->reprintBonos($user->getDni());
+        $myBonos = ReimprimirBonosResponse::createFromArray($myBonosResponse);
+        $campaign = $this->amorebonoService->info();
+        if ( !$myBonos->isOk() ) {
+            $this->addFlash('error', 'message.errorGettingBonos');
+        }
+        return $this->render('campaign/show.html.twig', [
+            'myBonos' => $myBonos,
+            'campaign' => $campaign,
+            'amorebonoUser' => $user,
+            'NikInternalLogin' => $NikInternalLogin,
+        ]);
+        
     }
 
     /**

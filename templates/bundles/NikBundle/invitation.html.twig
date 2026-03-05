@@ -11,11 +11,15 @@
    <div class="d-flex justify-content-center align-items-center h-100 w-100">
       {{ 'message.scanQRorUseDeeplink' | trans({},'nik') }}
    </div>
+   {# <div class="container-fluid d-flex justify-content-center align-items-center mt-2">
+      <a class="btn btn-lg btn-secondary" href="{{ path('app_auth_selector') }}">{{ 'btn.cancel' | trans }}</a>
+   </div> #}
+
    {% if ( ( invitation == null or ( invitation != null and invitation.status == 0 ) ) and invitationRequest.invUUID != null ) %}
       <script type='text/javascript'>
          setTimeout(() => {
             window.location.href="{{ absolute_url(path('amreu_nik_get_invitation', { 'inviId' : invitationRequest.invUUID })) }}"
          }, {{timeout}});
       </script>
-   {% endif %}   
+   {% endif %}
 {% endblock body %}

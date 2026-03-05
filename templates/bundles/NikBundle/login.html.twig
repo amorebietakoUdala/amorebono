@@ -13,6 +13,9 @@
             {{ 'message.nikAceptationWait' | trans }}
          </div>
       </div>
+      {# <div class="container-fluid d-flex justify-content-center align-items-center mb-1">
+         <a class="btn btn-lg btn-secondary" href="{{ path('app_auth_selector') }}">{{ 'btn.cancel' | trans }}</a>
+      </div> #}
    {% endif %}
    {% if ( threadId != null or ( threadId != null and threadStatus.status == 0 ) ) %}
       <script type='text/javascript'>
